@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disclose Framework</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- trust removed intentionally: disclosure is the mechanism, trust is the byproduct -->
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f4f0;
+      --off: #e8e6e0;
+      --gray: #888880;
+      --accent: #1a1a1a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* --- GRID LINES --- */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* --- HEADER --- */
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 4rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+    }
+
+    .logo-wrap img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .logo-text {
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    nav {
+      display: flex;
+      gap: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s ease forwards;
+    }
+
+    nav a {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--black); }
+
+    /* --- HERO --- */
+    .hero {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 73px);
+    }
+
+    .hero-left {
+      padding: 6rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .hero-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s ease forwards;
+    }
+
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      line-height: 1.05;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.3s ease forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gray);
+    }
+
+    .hero-body {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: #555550;
+      max-width: 42ch;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.4s ease forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.5s ease forwards;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: #333;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      border: 1px solid rgba(0,0,0,0.2);
+      color: var(--black);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--black);
+      transform: translateY(-1px);
+    }
+
+    /* --- HERO RIGHT --- */
+    .hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem;
+      opacity: 0;
+      animation: fadeIn 1s 0.6s ease forwards;
+    }
+
+    .hero-mark {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-mark::before {
+      content: '';
+      position: absolute;
+      inset: -20px;
+      border: 1px solid rgba(0,0,0,0.08);
+      animation: spin 30s linear infinite;
+    }
+
+    .hero-mark::after {
+      content: '';
+      position: absolute;
+      inset: -50px;
+      border: 1px solid rgba(0,0,0,0.04);
+      animation: spin 50s linear infinite reverse;
+    }
+
+    .hero-mark img {
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* --- STATS ROW --- */
+    .stats {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .stat {
+      padding: 2.5rem 4rem;
+      border-right: 1px solid rgba(0,0,0,0.1);
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-num {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    /* --- FEATURES --- */
+    .features {
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .feature {
+      padding: 3.5rem 4rem;
+      border-right: 1px solid rgba(0,0,0,0.1);
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .feature:last-child { border-right: none; }
+
+    .feature-num {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+
+    .feature-body {
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: #666660;
+    }
+
+    /* --- MANIFESTO --- */
+    .manifesto {
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      padding: 6rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .manifesto-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      padding-top: 0.4rem;
+    }
+
+    .manifesto-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+      line-height: 1.4;
+      font-weight: 400;
+    }
+
+    .manifesto-text em {
+      font-style: italic;
+      color: var(--gray);
+    }
+
+    /* --- CTA --- */
+    .cta {
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      background: var(--black);
+      color: var(--white);
+      padding: 5rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cta-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 400;
+    }
+
+    .cta-text em {
+      font-style: italic;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .cta .btn-primary {
+      background: var(--white);
+      color: var(--black);
+      flex-shrink: 0;
+    }
+
+    .cta .btn-primary:hover { background: var(--off); }
+
+    /* --- FOOTER --- */
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .footer-left img { width: 24px; height: 24px; object-fit: contain; }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--black); }
+
+    /* --- ANIMATIONS --- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* IntersectionObserver targets */
+    .reveal { opacity: 0; }
+    .reveal.visible { animation: fadeUp 0.6s ease forwards; }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 900px) {
+      header { padding: 1.5rem 2rem; }
+      nav { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { padding: 4rem 2rem; }
+      .stats, .features { grid-template-columns: 1fr; }
+      .stat, .feature { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 2rem 2rem; }
+      .manifesto { grid-template-columns: 1fr; gap: 1.5rem; padding: 4rem 2rem; }
+      .cta { flex-direction: column; gap: 2rem; padding: 4rem 2rem; text-align: center; }
+      footer { flex-direction: column; gap: 1rem; padding: 2rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <header>
+    <div class="logo-wrap">
+      <img src="disclose_logo.png" alt="Disclose Framework">
+      <span class="logo-text">Disclose Framework</span>
+    </div>
+    <nav>
+      <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
+      <a href="#overview">Overview</a>
+      <a href="#features">Protocol</a>
+      <a href="https://github.com/disclose-framework" target="_blank">Contribute</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="overview">
+    <div class="hero-left">
+      <p class="hero-tag">Open Infrastructure / v0.1 / MIT License</p>
+      <h1 class="hero-title">
+        Disclosure<br>
+        <em>infrastructure</em><br>
+        for AI commerce.
+      </h1>
+      <p class="hero-body">
+        An open-source protocol that enables merchants to expose siloed operational data in machine-readable formats — built for the age of agentic commerce.
+      </p>
+      <div class="hero-actions">
+        <a href="https://github.com/disclose-framework" target="_blank" class="btn-primary">View on GitHub</a>
+        <a href="#features" class="btn-secondary">Read the Spec</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-mark">
+        <img src="disclose_logo.png" alt="DF">
+      </div>
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat reveal">
+      <div class="stat-num">60+</div>
+      <div class="stat-label">Disclosure Signal Types</div>
+    </div>
+    <div class="stat reveal" style="animation-delay:0.1s">
+      <div class="stat-num">6</div>
+      <div class="stat-label">Signal Categories</div>
+    </div>
+    <div class="stat reveal" style="animation-delay:0.2s">
+      <div class="stat-num">Open</div>
+      <div class="stat-label">Source & Governance</div>
+    </div>
+  </div>
+
+  <section class="features" id="features">
+    <div class="feature reveal">
+      <div class="feature-num">01 / Machine-Readable</div>
+      <h2 class="feature-title">Structured Disclosure Signals</h2>
+      <p class="feature-body">
+        Merchants expose operational data — return policies, inventory accuracy, seller verification, fulfillment SLAs — in standardized formats consumable by AI shopping agents.
+      </p>
+    </div>
+    <div class="feature reveal" style="animation-delay:0.1s">
+      <div class="feature-num">02 / Agent-Native</div>
+      <h2 class="feature-title">Built for Agentic Commerce</h2>
+      <p class="feature-body">
+        As AI agents increasingly mediate purchasing decisions, Disclose provides the disclosure layer they need to evaluate merchants beyond price and availability.
+      </p>
+    </div>
+    <div class="feature reveal" style="animation-delay:0.2s">
+      <div class="feature-num">03 / Industry-Neutral</div>
+      <h2 class="feature-title">Universal Infrastructure</h2>
+      <p class="feature-body">
+        Not tied to any single platform. Designed to work across the e-commerce ecosystem — from Shopify to enterprise, from direct-to-consumer to marketplace.
+      </p>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <div class="manifesto-label reveal">Manifesto</div>
+    <div class="manifesto-text reveal" style="animation-delay:0.1s">
+      "The future of commerce is agentic. Buyers won't browse — their agents will decide. Disclose is <em>the open layer</em> that makes merchant data legible to machines."
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-text">
+      Build the open<br><em>disclosure layer</em> with us.
+    </div>
+    <a href="https://github.com/disclose-framework" target="_blank" class="btn-primary">Contribute on GitHub →</a>
+  </section>
+
+  <footer>
+    <div class="footer-left">
+      <img src="disclose_logo.png" alt="DF">
+      <span class="footer-copy">© 2026 Disclose Framework — Open Source, MIT License</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
+      <a href="https://discloseframework.dev">discloseframework.dev</a>
+    </div>
+  </footer>
+
+  <script>
+    // Intersection observer for scroll reveals
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(r => observer.observe(r));
+  </script>
+</body>
+</html>
