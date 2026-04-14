@@ -551,39 +551,39 @@
 
   <div class="stats">
     <div class="stat reveal">
+      <div class="stat-num">Open</div>
+      <div class="stat-label">MIT License. No platform owns it.</div>
+    </div>
+    <div class="stat reveal" style="animation-delay:0.1s">
       <div class="stat-num">/.well-known/</div>
       <div class="stat-label">The discovery path. No registry required.</div>
     </div>
-    <div class="stat reveal" style="animation-delay:0.1s">
-      <div class="stat-num">Attested</div>
-      <div class="stat-label">Verifier-signed or merchant-reported. Agents know the difference.</div>
-    </div>
     <div class="stat reveal" style="animation-delay:0.2s">
-      <div class="stat-num">Open</div>
-      <div class="stat-label">MIT License. No platform owns it.</div>
+      <div class="stat-num">Attested</div>
+      <div class="stat-label">Signatory-attested, computed, or merchant-reported. Agents know the difference.</div>
     </div>
   </div>
 
   <section class="features" id="features">
     <div class="feature reveal" style="animation-delay:0.1s">
-   <div class="feature-num">01 / Discovery</div>
+      <div class="feature-num">01 / Architecture</div>
+      <h2 class="feature-title">No owner. No lock-in.</h2>
+      <p class="feature-body">
+        No single company decides what gets measured. The spec is MIT-licensed, governed openly, and designed to sit below any platform — not inside one. Any merchant, any agent, any stack.
+      </p>
+    </div>
+    <div class="feature reveal" style="animation-delay:0.2s">
+      <div class="feature-num">02 / Discovery</div>
       <h2 class="feature-title">One file. Any agent.</h2>
       <p class="feature-body">
         Merchants publish a <code>/.well-known/disclose.json</code> on their domain — the same convention as robots.txt, but for AI agents. No registry. No platform dependency. Any agent that knows the convention can find it.
       </p>
     </div>
-    <div class="feature reveal" style="animation-delay:0.2s">
-       <div class="feature-num">02 / Attestation</div>
-      <h2 class="feature-title">Named verifiers. Staked reputations.</h2>
-      <p class="feature-body">
-        Every signal is either verifier-attested or merchant-reported. Agents know which is which.
-      </p>
-    </div>
     <div class="feature reveal" style="animation-delay:0.3s">
-      <div class="feature-num">03 / Architecture</div>
-      <h2 class="feature-title">Three scopes. One document.</h2>
+      <div class="feature-num">03 / Attestation</div>
+      <h2 class="feature-title">Named Signatories. Staked reputations.</h2>
       <p class="feature-body">
-        Signals are published at Merchant, Offer, or Item scope. An agent comparing the same product across two sellers can read merchant-level confidence, SKU-level performance, and item-level attributes — all from a single endpoint.
+        Every signal carries an attestation level: Signatory-attested, computed from a platform API, or merchant-reported. Agents know which is which and weight accordingly.
       </p>
     </div>
   </section>
@@ -598,35 +598,35 @@
   </section>
 
   <section class="manifesto">
-  <div class="manifesto-label reveal">Governance</div>
-  <div class="manifesto-text reveal" style="animation-delay:0.1s;">
-    Disclose is MIT-licensed. The spec is designed to be owned by no single company — 
-    not by a platform, not by a verifier, and not by its founder.<br><br>
-    <em>Independent governance is in formation. The working group is the first step.</em>
-  </div>
-</section>
+    <div class="manifesto-label reveal">Governance</div>
+    <div class="manifesto-text reveal" style="animation-delay:0.1s;">
+      Disclose is MIT-licensed. The spec is designed to be owned by no single company — 
+      not by a platform, not by a Signatory, and not by its founder.<br><br>
+      <em>Independent governance is in formation. The working group is the first step.</em>
+    </div>
+  </section>
 
   <section class="working-group" id="working-group">
     <div class="working-group-label reveal">Working Group</div>
     <div class="working-group-content">
       <h2 class="working-group-title reveal">The spec exists. The working group is in its first cohort. The goal is Disclose Protocol, open governance, independent foundation, MIT-licensed forever. The working group is how we get there.</h2>
-     <p class="working-group-body reveal" style="animation-delay:0.1s">
-  We're looking for three types of participants: merchants with clean operational data and existing verifier relationships, verifiers who already hold the signals the schema defines, and infrastructure builders who will find the gaps before they become problems at scale.<br><br>
-  The ask is specific — read the spec, stress-test the schema against your data, and tell us where it breaks. That's it.
-</p>
+      <p class="working-group-body reveal" style="animation-delay:0.1s">
+        We're looking for three types of participants: merchants with clean operational data and existing Signatory relationships, Signatories who already hold the signals the schema defines, and infrastructure builders who will find the gaps before they become problems at scale.<br><br>
+        The ask is specific — read the spec, stress-test the schema against your data, and tell us where it breaks. That's it.
+      </p>
       <div class="working-group-actions reveal" style="animation-delay:0.2s">
         <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-secondary">Read the Spec</a>
         <a href="https://github.com/disclose-framework" target="_blank" class="btn-primary">Join on GitHub →</a>
       </div>
     </div>
   </section>
-  
-<section class="cta">
-  <div class="cta-text">
-    The spec is live. <em>The working group is open.</em>
-  </div>
-  <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-primary">Read the Spec →</a>
-</section>
+
+  <section class="cta">
+    <div class="cta-text">
+      The spec is live. <em>The working group is open.</em>
+    </div>
+    <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-primary">Read the Spec →</a>
+  </section>
 
   <footer>
     <div class="footer-left">
