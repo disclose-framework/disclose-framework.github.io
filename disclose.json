@@ -1,0 +1,61 @@
+{
+  "schema_version": "0.2",
+  "generated_at": "2026-04-28T00:00:00Z",
+  "merchant_domain": "discloseframework.dev",
+  "signals": {
+    "product_return_rate": {
+      "value": 0.0,
+      "unit": "ratio",
+      "observation_window_days": 90,
+      "source": "shopify_api",
+      "reported_by": "merchant",
+      "computed_by": "sure_signal",
+      "attestation": null
+    },
+    "on_time_shipment_rate": {
+      "value": null,
+      "unit": "ratio",
+      "observation_window_days": 90,
+      "source": "shopify_api",
+      "reported_by": "merchant",
+      "computed_by": "sure_signal",
+      "attestation": null
+    },
+    "refund_processing_time_median_days": {
+      "value": null,
+      "unit": "days",
+      "observation_window_days": 90,
+      "source": "shopify_api",
+      "reported_by": "merchant",
+      "computed_by": "sure_signal",
+      "attestation": null
+    },
+    "chargeback_rate": {
+      "value": 0.0,
+      "unit": "ratio",
+      "observation_window_days": 90,
+      "source": "shopify_api",
+      "reported_by": "merchant",
+      "computed_by": "sure_signal",
+      "attestation": null
+    },
+    "dispute_win_rate": {
+      "value": null,
+      "unit": "ratio",
+      "observation_window_days": 90,
+      "source": "shopify_api",
+      "reported_by": "merchant",
+      "computed_by": "sure_signal",
+      "attestation": null
+    },
+    "platform_seller_tenure_days": {
+      "value": 90,
+      "unit": "days",
+      "observation_window_days": null,
+      "source": "shopify_api",
+      "reported_by": "merchant",
+      "computed_by": "sure_signal",
+      "attestation": null
+    }
+  }
+}
