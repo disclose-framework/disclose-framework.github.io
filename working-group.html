@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="disclose_logo.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Working Group — Disclose Framework</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f4f0;
+      --off: #e8e6e0;
+      --gray: #888880;
+      --accent: #1a1a1a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    header {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2rem 4rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards;
+      text-decoration: none;
+    }
+
+    .logo-wrap img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+    }
+
+    .logo-text {
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+
+    nav {
+      display: flex;
+      gap: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s ease forwards;
+    }
+
+    nav a {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--black); }
+    nav a.active { color: var(--black); }
+
+    /* Page header */
+    .page-header {
+      position: relative;
+      z-index: 10;
+      padding: 6rem 4rem 5rem;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .page-header-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      padding-top: 0.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s ease forwards;
+    }
+
+    .page-header-content {
+      opacity: 0;
+      animation: fadeUp 0.6s 0.3s ease forwards;
+    }
+
+    .page-header-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 4.5vw, 5rem);
+      line-height: 1.05;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+    }
+
+    .page-header-title em {
+      font-style: italic;
+      color: var(--gray);
+    }
+
+    .page-header-body {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: #555550;
+      max-width: 58ch;
+    }
+
+    /* The core argument */
+    .argument {
+      position: relative;
+      z-index: 10;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 4rem;
+      padding: 5rem 4rem;
+      align-items: start;
+    }
+
+    .argument-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      padding-top: 0.4rem;
+    }
+
+    .argument-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.5rem, 2.2vw, 2.1rem);
+      line-height: 1.5;
+      font-weight: 400;
+    }
+
+    .argument-text em {
+      font-style: italic;
+      color: var(--gray);
+    }
+
+    /* Two-track section */
+    .tracks {
+      position: relative;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .track {
+      padding: 4rem;
+      border-right: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .track:last-child { border-right: none; }
+
+    .track-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      border: 1px solid rgba(0,0,0,0.15);
+      padding: 0.3rem 0.7rem;
+      margin-bottom: 2rem;
+    }
+
+    .track-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.7rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .track-body {
+      font-size: 0.85rem;
+      line-height: 1.9;
+      color: #555550;
+      margin-bottom: 2rem;
+    }
+
+    .track-questions {
+      list-style: none;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding-top: 1.5rem;
+    }
+
+    .track-questions li {
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--gray);
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      display: flex;
+      gap: 0.75rem;
+      align-items: baseline;
+    }
+
+    .track-questions li::before {
+      content: '—';
+      color: rgba(0,0,0,0.2);
+      flex-shrink: 0;
+      font-size: 0.7rem;
+    }
+
+    .track-questions li:last-child { border-bottom: none; }
+
+    /* What you're signing up for */
+    .commitment {
+      position: relative;
+      z-index: 10;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 4rem;
+      padding: 5rem 4rem;
+      align-items: start;
+    }
+
+    .commitment-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      padding-top: 0.4rem;
+    }
+
+    .commitment-content {}
+
+    .commitment-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.4rem, 2vw, 1.9rem);
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+    }
+
+    .commitment-body {
+      font-size: 0.88rem;
+      line-height: 1.9;
+      color: #555550;
+      max-width: 58ch;
+      margin-bottom: 2rem;
+    }
+
+    .commitment-items {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid rgba(0,0,0,0.1);
+      margin-top: 2rem;
+    }
+
+    .commitment-item {
+      padding: 2rem;
+      border-right: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .commitment-item:last-child { border-right: none; }
+
+    .commitment-item-num {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gray);
+      margin-bottom: 0.75rem;
+    }
+
+    .commitment-item-text {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: #444440;
+    }
+
+    /* Contact / CTA */
+    .contact {
+      position: relative;
+      z-index: 10;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      background: var(--black);
+      color: var(--white);
+      padding: 5rem 4rem;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      padding-top: 0.4rem;
+    }
+
+    .contact-content {}
+
+    .contact-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-title em {
+      font-style: italic;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .contact-body {
+      font-size: 0.88rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.55);
+      max-width: 52ch;
+      margin-bottom: 2.5rem;
+    }
+
+    .contact-email {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 2rem;
+      background: var(--white);
+      color: var(--black);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .contact-email:hover {
+      background: var(--off);
+      transform: translateY(-1px);
+    }
+
+    .contact-note {
+      margin-top: 1.5rem;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.05em;
+    }
+
+    /* Footer */
+    footer {
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .footer-left img { width: 24px; height: 24px; object-fit: contain; }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .footer-links a {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--black); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal { opacity: 0; }
+    .reveal.visible { animation: fadeUp 0.6s ease forwards; }
+
+    @media (max-width: 900px) {
+      header { padding: 1.5rem 2rem; }
+      nav { display: none; }
+      .page-header, .argument, .commitment, .contact { grid-template-columns: 1fr; gap: 1.5rem; padding: 4rem 2rem; }
+      .tracks { grid-template-columns: 1fr; }
+
+      .track { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 3rem 2rem; }
+      .commitment-items { grid-template-columns: 1fr; }
+      .commitment-item { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
+      .commitment-item:last-child { border-bottom: none; }
+      footer { flex-direction: column; gap: 1rem; padding: 2rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <header>
+    <a href="/" class="logo-wrap">
+      <img src="disclose_logo.png" alt="Disclose Framework">
+      <span class="logo-text">Disclose Framework</span>
+    </a>
+    <nav>
+      <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
+      <a href="/#overview">Overview</a>
+      <a href="/#features">Framework</a>
+      <a href="/working-group.html" class="active">Working Group</a>
+    </nav>
+  </header>
+
+  <section class="page-header">
+    <div class="page-header-label">Working Group</div>
+    <div class="page-header-content">
+      <h1 class="page-header-title">
+        The standard is being<br>
+        shaped <em>right now.</em>
+      </h1>
+      <p class="page-header-body">
+        Agentic commerce is going to need structured merchant performance data. That is not a question. The only question is whether the standard that emerges is open or proprietary. The working group exists to make sure it's open, and to make sure the people who understand the problem have a hand in defining it.
+      </p>
+    </div>
+  </section>
+
+  <section class="argument reveal">
+    <div class="argument-label">The case for being early</div>
+    <div class="argument-text">
+      Any thinking, scoping, or building your organization puts into this problem has value <em>regardless of which standard wins.</em> The data model is the same problem either way. What changes is whether you shaped it or inherited it.
+    </div>
+  </section>
+
+  <section class="tracks">
+    <div class="track reveal">
+      <div class="track-tag">For Merchants</div>
+      <h2 class="track-title">What signals actually matter to a buyer's agent</h2>
+      <p class="track-body">
+        The spec defines 61 signals across 12 categories. Not all of them are equally useful at the moment of a purchasing decision. Merchants in the working group help us understand which signals they can produce reliably, which ones they'd actually want to surface, and where the spec asks for data that doesn't exist cleanly in practice.
+      </p>
+      <ul class="track-questions">
+        <li>Which of your operational metrics would you want an agent to see?</li>
+        <li>Which signals are clean enough to publish without qualification?</li>
+        <li>What would make you confident enough to put your numbers in front of a buyer's agent?</li>
+        <li>Where does the current schema miss how your business actually works?</li>
+      </ul>
+    </div>
+    <div class="track reveal" style="animation-delay: 0.1s">
+      <div class="track-tag">For Signatories</div>
+      <h2 class="track-title">What you can attest to, and what you can't</h2>
+      <p class="track-body">
+        Signatories are the organizations that hold merchant performance data directly: returns platforms, logistics providers, payment processors, review services. The working group needs to know what attestation looks like in practice, what data can be exposed safely, what can be kept updated, and where the liability and technical limits actually are.
+      </p>
+      <ul class="track-questions">
+        <li>Which signals in the schema map to data you already hold?</li>
+        <li>What can you attest to safely, and what carries too much exposure?</li>
+        <li>How frequently could attestations be refreshed?</li>
+        <li>What would a production-grade Signatory integration actually require?</li>
+      </ul>
+    </div>
+    <div class="track reveal" style="animation-delay: 0.2s">
+      <div class="track-tag">For Infrastructure Builders</div>
+      <h2 class="track-title">Where the spec breaks before it scales</h2>
+      <p class="track-body">
+        Open standards fail in predictable ways: governance drift, platform capture, adoption incentives that erode over time. Infrastructure builders, organizations with experience shipping and stewarding open protocols, are the people most likely to see those failure modes early. The working group needs that perspective before the spec hardens, not after.
+      </p>
+      <ul class="track-questions">
+        <li>Where does the governance model create fragility?</li>
+        <li>What does the spec assume that won't hold at scale?</li>
+        <li>What would make this worth implementing in your stack?</li>
+        <li>Where does open governance need to be structurally enforced, not just intended?</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="commitment reveal">
+    <div class="commitment-label">What this is</div>
+    <div class="commitment-content">
+      <h2 class="commitment-title">Not a committee. Not a commitment. A conversation while the spec is still open.</h2>
+      <p class="commitment-body">
+        The working group is not asking for resources, engineering time, or endorsement. It's asking for the kind of feedback that only comes from people who understand the data, the attestation mechanics, or the governance risks at a level the spec's author doesn't. If the schema has problems, we need to know before it scales. That's the entire ask.
+      </p>
+      <div class="commitment-items">
+        <div class="commitment-item">
+          <div class="commitment-item-num">01</div>
+          <div class="commitment-item-text">Review the signal definitions that are relevant to your organization and tell us where they're wrong, incomplete, or unworkable.</div>
+        </div>
+        <div class="commitment-item">
+          <div class="commitment-item-num">02</div>
+          <div class="commitment-item-text">Participate in async discussion via GitHub Issues. No calls required unless you want them.</div>
+        </div>
+        <div class="commitment-item">
+          <div class="commitment-item-num">03</div>
+          <div class="commitment-item-text">Your organization's name is associated with the working group only if you want it to be.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <div class="contact-label">Get involved</div>
+    <div class="contact-content">
+      <h2 class="contact-title">
+        The spec is open.<br>
+        <em>The working group is being built now.</em>
+      </h2>
+      <p class="contact-body">
+        If the problem is real to you, reach out. Tell us who you are, which track is relevant (merchant or Signatory), and one thing about the current spec you'd want to push on. That's enough to start.
+      </p>
+      <a href="mailto:daniel@discloseframework.dev?subject=Working Group" class="contact-email">
+        daniel@discloseframework.dev →
+      </a>
+      <p class="contact-note">A form is coming. Email works for now.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-left">
+      <img src="disclose_logo.png" alt="DF">
+      <span class="footer-copy">© 2026 Disclose Framework — Open Source, MIT License</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
+      <a href="https://discloseframework.dev">discloseframework.dev</a>
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(r => observer.observe(r));
+  </script>
+</body>
+</html>
