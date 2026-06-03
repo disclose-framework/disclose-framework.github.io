@@ -603,9 +603,9 @@ footer {
       <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-secondary">Read the Spec</a>
     </div>
 
-    <!-- Spline 3D below buttons -->
+    <!-- Spline 3D below buttons — self-hosted runtime, no watermark -->
     <div class="hero-mark-left">
-      <iframe src='https://my.spline.design/3dlogoanimation-pzm4XrX4Ex3tuiDuOEppOpU5/' frameborder='0' width='100%' height='100%' style="display:block; min-height:280px; pointer-events:none;"></iframe>
+      <canvas id="spline-canvas" style="width:100%; height:100%; min-height:280px; display:block;"></canvas>
     </div>
   </div>
 
@@ -901,5 +901,22 @@ play();
 <script>
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="on_Ebv1KxZyKs4Jsl14FG";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 </script>
+<!-- Spline runtime — no watermark -->
+<script type="module">
+  import { Application } from 'https://unpkg.com/@splinetool/runtime@1.9.27/build/runtime.js';
+  const canvas = document.getElementById('spline-canvas');
+  const app = new Application(canvas);
+  app.load('https://prod.spline.design/SaLC4XyIuKfIY0mM/scene.splinecode').then(() => {
+    // Match canvas size to container
+    const resize = () => {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.style.width = rect.width + 'px';
+      canvas.style.height = rect.height + 'px';
+    };
+    resize();
+    window.addEventListener('resize', resize);
+  });
+</script>
+
 </body>
 </html>
