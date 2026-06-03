@@ -150,45 +150,16 @@ nav a:hover { color: var(--black); }
   margin-bottom: 4rem;
 }
 
-/* Spinning D mark — left column, below buttons */
+/* Spline 3D — left column, below buttons */
 .hero-mark-left {
   opacity: 0;
   animation: fadeIn 1s 0.8s ease forwards;
   flex: 1;
   display: flex;
-  align-items: flex-end;
-  padding-bottom: 2rem;
-}
-.hero-mark-wrap {
-  position: relative;
-  width: 180px;
-  height: 180px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.hero-mark-wrap::before {
-  content: '';
-  position: absolute;
-  inset: -16px;
-  border: 1px solid rgba(0,0,0,0.07);
-  border-radius: 50%;
-  animation: spin 30s linear infinite;
-}
-.hero-mark-wrap::after {
-  content: '';
-  position: absolute;
-  inset: -36px;
-  border: 1px solid rgba(0,0,0,0.04);
-  border-radius: 50%;
-  animation: spin 50s linear infinite reverse;
-}
-.hero-mark-wrap img {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-  position: relative;
-  z-index: 2;
+  align-items: stretch;
+  min-height: 280px;
+  margin-top: 1rem;
+  overflow: hidden;
 }
 
 /* RIGHT: demo panel */
@@ -632,15 +603,13 @@ footer {
       <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-secondary">Read the Spec</a>
     </div>
 
-    <!-- Spinning D mark below buttons -->
+    <!-- Spline 3D below buttons -->
     <div class="hero-mark-left">
-      <div class="hero-mark-wrap">
-        <img src="disclose_logo.png" alt="Disclose">
-      </div>
+      <iframe src='https://my.spline.design/3dlogoanimation-pzm4XrX4Ex3tuiDuOEppOpU5/' frameborder='0' width='100%' height='100%' style="display:block; min-height:280px; pointer-events:none;"></iframe>
     </div>
   </div>
 
-
+  <!-- RIGHT: LLM demo panel -->
   <div class="hero-right">
     <div class="demo-panel">
 
