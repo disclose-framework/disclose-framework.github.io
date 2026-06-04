@@ -56,11 +56,38 @@ header {
 .logo-wrap {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.85rem;
   opacity: 0;
   animation: fadeUp 0.6s ease forwards;
 }
-.logo-wrap img { width: 56px; height: 56px; object-fit: contain; }
+
+/* Spline 3D mark — desktop */
+.logo-spline {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  display: block;
+}
+.logo-spline iframe {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 24px);
+  border: none;
+  pointer-events: none;
+}
+
+/* Static PNG fallback — mobile only */
+.logo-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  display: none;
+}
+
 .logo-text {
   font-family: 'DM Mono', monospace;
   font-weight: 500;
@@ -91,7 +118,7 @@ nav a:hover { color: var(--black); }
   z-index: 10;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 73px);
+  min-height: calc(100vh - 89px);
 }
 
 /* LEFT */
@@ -102,15 +129,6 @@ nav a:hover { color: var(--black); }
   justify-content: center;
   border-right: 1px solid rgba(0,0,0,0.1);
 }
-.hero-tag {
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeUp 0.6s 0.2s ease forwards;
-}
 .hero-title {
   font-family: 'DM Serif Display', serif;
   font-size: clamp(3rem, 5vw, 5.5rem);
@@ -119,13 +137,7 @@ nav a:hover { color: var(--black); }
   letter-spacing: -0.02em;
   margin-bottom: 2rem;
   opacity: 0;
-  animation: fadeUp 0.7s 0.3s ease forwards;
-}
-.hero-title em {
-  font-style: italic;
-  color: var(--gray);
-  display: block;
-  margin-bottom: 2.0rem;
+  animation: fadeUp 0.7s 0.2s ease forwards;
 }
 .hero-body {
   font-size: 0.95rem;
@@ -134,12 +146,7 @@ nav a:hover { color: var(--black); }
   max-width: 42ch;
   margin-bottom: 3rem;
   opacity: 0;
-  animation: fadeUp 0.6s 0.4s ease forwards;
-}
-.hero-body-bold {
-  display: block;
-  font-weight: 500;
-  color: var(--black);
+  animation: fadeUp 0.6s 0.35s ease forwards;
 }
 .hero-actions {
   display: flex;
@@ -147,39 +154,6 @@ nav a:hover { color: var(--black); }
   align-items: center;
   opacity: 0;
   animation: fadeUp 0.6s 0.5s ease forwards;
-  margin-bottom: 4rem;
-}
-
-/* Spline 3D — left column, below buttons */
-.hero-mark-left {
-  opacity: 0;
-  animation: fadeIn 1s 0.8s ease forwards;
-  flex: 1;
-  display: flex;
-  align-items: stretch;
-  min-height: 280px;
-  margin-top: 1rem;
-  overflow: hidden;
-  position: relative;
-  background: var(--white);
-}
-.hero-mark-left iframe {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 280px;
-  pointer-events: none;
-  border: none;
-}
-.spline-cover {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background: var(--white);
-  z-index: 10;
 }
 
 /* RIGHT: demo panel */
@@ -203,8 +177,6 @@ nav a:hover { color: var(--black); }
   display: flex;
   flex-direction: column;
 }
-
-/* grid overlay on dark panel */
 .demo-panel::before {
   content: '';
   position: absolute;
@@ -216,7 +188,6 @@ nav a:hover { color: var(--black); }
     linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
   background-size: 40px 40px;
 }
-
 .panel-bar {
   position: relative;
   z-index: 2;
@@ -242,7 +213,6 @@ nav a:hover { color: var(--black); }
   text-transform: uppercase;
   color: rgba(255,255,255,0.14);
 }
-
 .panel-chat {
   position: relative;
   z-index: 2;
@@ -566,7 +536,6 @@ footer {
 /* ── KEYFRAMES ── */
 @keyframes fadeUp  { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
-@keyframes spin    { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes blink   { 0%,100%{opacity:1} 50%{opacity:0} }
 
 .reveal { opacity: 0; }
@@ -576,11 +545,11 @@ footer {
 @media (max-width: 900px) {
   header { padding: 1.5rem 2rem; }
   nav { display: none; }
+  .logo-spline { display: none; }
+  .logo-img { display: block; }
   .hero { grid-template-columns: 1fr; }
   .hero-right { display: none; }
-  .hero-mark-left { display: none; }
   .hero-left { padding: 4rem 2rem; }
-  .hero-actions { margin-bottom: 0; }
   .stats, .features { grid-template-columns: 1fr; }
   .stat, .feature { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 2rem 2rem; }
   .manifesto { grid-template-columns: 1fr; gap: 1.5rem; padding: 4rem 2rem; }
@@ -595,7 +564,15 @@ footer {
 
 <header>
   <div class="logo-wrap">
-    <img src="disclose_logo.png" alt="Disclose">
+    <!-- Spline 3D mark: desktop only -->
+    <div class="logo-spline">
+      <iframe
+        src="https://my.spline.design/3dlogoanimation-pzm4XrX4Ex3tuiDuOEppOpU5/"
+        frameborder="0">
+      </iframe>
+    </div>
+    <!-- Static PNG fallback: mobile only -->
+    <img class="logo-img" src="disclose_logo.png" alt="Disclose">
     <span class="logo-text">Disclose</span>
   </div>
   <nav>
@@ -610,23 +587,15 @@ footer {
 
   <!-- LEFT -->
   <div class="hero-left">
-    <p class="hero-tag">Open Standard / v0.3 / MIT License</p>
     <h1 class="hero-title">
-      Disclose is the confidence layer for AI agents.
+      The open standard for operational disclosure.
     </h1>
     <p class="hero-body">
-      An open standard for publishing verified operational signals.
-      <strong class="hero-body-bold">Agents evaluate businesses, services, and digital resources before making decisions.</strong>
+      When an agent evaluates a purchase, it reads the marketing layer. Not the operational layer. Disclose is the schema that changes that.
     </p>
     <div class="hero-actions">
       <a href="https://github.com/disclose-framework" target="_blank" class="btn-primary">View on GitHub</a>
       <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-secondary">Read the Spec</a>
-    </div>
-
-    <!-- Spline 3D below buttons -->
-    <div class="hero-mark-left">
-      <iframe src='https://my.spline.design/3dlogoanimation-pzm4XrX4Ex3tuiDuOEppOpU5/' frameborder='0'></iframe>
-      <div class="spline-cover"></div>
     </div>
   </div>
 
@@ -783,21 +752,21 @@ footer {
     <div class="feature-num">01 / Discovery</div>
     <h2 class="feature-title">One file. Any agent.</h2>
     <p class="feature-body">
-      Merchants publish at <code>/.well-known/disclose</code> — the same convention as robots.txt, but for AI agents. No registry. No platform dependency. Any agent that knows the convention can find it.
+      Entities publish at <code>/.well-known/disclose</code> — the same convention as robots.txt, but for AI agents. No registry. No platform dependency. Any agent that knows the convention can find it.
     </p>
   </div>
   <div class="feature reveal" style="animation-delay:0.2s">
     <div class="feature-num">02 / Attestation</div>
     <h2 class="feature-title">Named Signatories. Staked reputations.</h2>
     <p class="feature-body">
-      Every signal is either Signatory-attested or merchant-reported. Agents know which is which. Returns platforms, logistics providers, and payment processors can stake their reputation on the data they already hold.
+      Every signal carries an attestation level: Signatory-attested or self-reported. Agents know which is which. Returns platforms, logistics providers, and payment processors can stake their reputation on the data they already hold. Signatory integrations are in active development.
     </p>
   </div>
   <div class="feature reveal" style="animation-delay:0.3s">
     <div class="feature-num">03 / Architecture</div>
     <h2 class="feature-title">Three scopes. One document.</h2>
     <p class="feature-body">
-      Signals are published at Merchant, Offer, or Item scope. An agent comparing the same product across two sellers can read merchant-level confidence, SKU-level performance, and item-level attributes — all from a single endpoint.
+      Signals are published at Merchant, Offer, or Item scope. An agent comparing the same product across two sellers can read entity-level performance, SKU-level data, and item-level attributes — all from a single endpoint.
     </p>
   </div>
 </section>
@@ -825,7 +794,7 @@ footer {
   <div class="working-group-content">
     <h2 class="working-group-title reveal">The spec exists. The working group is in its first cohort.</h2>
     <p class="working-group-body reveal" style="animation-delay:0.1s">
-      We're looking for three types of participants: merchants with clean operational data and existing Signatory relationships, Signatories who already hold the signals the schema defines, and infrastructure builders who will find the gaps before they become problems at scale.<br><br>
+      We're looking for three types of participants: entities with clean operational data and existing Signatory relationships, Signatories who already hold the signals the schema defines, and infrastructure builders who will find the gaps before they become problems at scale.<br><br>
       The ask is specific — read the spec, stress-test the schema against your data, and tell us where it breaks. That's it.
     </p>
     <div class="working-group-actions reveal" style="animation-delay:0.2s">
@@ -864,7 +833,7 @@ const io = new IntersectionObserver((entries) => {
 reveals.forEach(r => io.observe(r));
 
 /* ── Demo panel animation ── */
-const LOOP_PAUSE = 10000; // 10 second hold before restart
+const LOOP_PAUSE = 10000;
 
 const steps = [
   { id: 'u1',            delay: 700  },
