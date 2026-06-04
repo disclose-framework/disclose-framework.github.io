@@ -50,51 +50,16 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2rem 4rem;
+  padding: 1.4rem 4rem;
   border-bottom: 1px solid rgba(0,0,0,0.1);
 }
-.logo-wrap {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
+.header-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray);
   opacity: 0;
   animation: fadeUp 0.6s ease forwards;
-}
-
-/* Spline 3D mark — desktop */
-.logo-spline {
-  width: 56px;
-  height: 56px;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
-  display: block;
-}
-.logo-spline iframe {
-  position: absolute;
-  top: -12px;
-  left: -12px;
-  width: calc(100% + 24px);
-  height: calc(100% + 24px);
-  border: none;
-  pointer-events: none;
-}
-
-/* Static PNG fallback — mobile only */
-.logo-img {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  display: none;
-}
-
-.logo-text {
-  font-family: 'DM Mono', monospace;
-  font-weight: 500;
-  font-size: 1rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--black);
 }
 nav {
   display: flex;
@@ -118,26 +83,50 @@ nav a:hover { color: var(--black); }
   z-index: 10;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 89px);
+  min-height: calc(100vh - 57px);
 }
 
 /* LEFT */
 .hero-left {
-  padding: 6rem 4rem;
+  padding: 5rem 4rem 5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   border-right: 1px solid rgba(0,0,0,0.1);
 }
+
+/* D + wordmark lockup */
+.hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 0.15s ease forwards;
+}
+.hero-brand img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+.hero-brand-name {
+  font-family: 'DM Mono', monospace;
+  font-weight: 500;
+  font-size: 1.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--black);
+}
+
 .hero-title {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(3rem, 5vw, 5.5rem);
+  font-size: clamp(2.8rem, 4.5vw, 5rem);
   line-height: 1.05;
   font-weight: 400;
   letter-spacing: -0.02em;
   margin-bottom: 2rem;
   opacity: 0;
-  animation: fadeUp 0.7s 0.2s ease forwards;
+  animation: fadeUp 0.7s 0.28s ease forwards;
 }
 .hero-body {
   font-size: 0.95rem;
@@ -146,14 +135,14 @@ nav a:hover { color: var(--black); }
   max-width: 42ch;
   margin-bottom: 3rem;
   opacity: 0;
-  animation: fadeUp 0.6s 0.35s ease forwards;
+  animation: fadeUp 0.6s 0.4s ease forwards;
 }
 .hero-actions {
   display: flex;
   gap: 1rem;
   align-items: center;
   opacity: 0;
-  animation: fadeUp 0.6s 0.5s ease forwards;
+  animation: fadeUp 0.6s 0.52s ease forwards;
 }
 
 /* RIGHT: demo panel */
@@ -543,13 +532,11 @@ footer {
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  header { padding: 1.5rem 2rem; }
+  header { padding: 1.2rem 2rem; }
   nav { display: none; }
-  .logo-spline { display: none; }
-  .logo-img { display: block; }
   .hero { grid-template-columns: 1fr; }
   .hero-right { display: none; }
-  .hero-left { padding: 4rem 2rem; }
+  .hero-left { padding: 3.5rem 2rem; }
   .stats, .features { grid-template-columns: 1fr; }
   .stat, .feature { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 2rem 2rem; }
   .manifesto { grid-template-columns: 1fr; gap: 1.5rem; padding: 4rem 2rem; }
@@ -563,18 +550,7 @@ footer {
 <div class="grid-bg"></div>
 
 <header>
-  <div class="logo-wrap">
-    <!-- Spline 3D mark: desktop only -->
-    <div class="logo-spline">
-      <iframe
-        src="https://my.spline.design/3dlogoanimation-pzm4XrX4Ex3tuiDuOEppOpU5/"
-        frameborder="0">
-      </iframe>
-    </div>
-    <!-- Static PNG fallback: mobile only -->
-    <img class="logo-img" src="disclose_logo.png" alt="Disclose">
-    <span class="logo-text">Disclose</span>
-  </div>
+  <span class="header-tag">Open Standard / V0.3 / MIT License</span>
   <nav>
     <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
     <a href="#overview">Overview</a>
@@ -587,6 +563,13 @@ footer {
 
   <!-- LEFT -->
   <div class="hero-left">
+
+    <!-- Brand lockup -->
+    <div class="hero-brand">
+      <img src="disclose_logo.png" alt="Disclose">
+      <span class="hero-brand-name">Disclose</span>
+    </div>
+
     <h1 class="hero-title">
       The open standard for operational disclosure.
     </h1>
@@ -739,7 +722,7 @@ footer {
   </div>
   <div class="stat reveal" style="animation-delay:0.1s">
     <div class="stat-num">Attested</div>
-    <div class="stat-label">Signatory-signed or merchant-reported. Agents know the difference.</div>
+    <div class="stat-label">Signatory-signed or self-reported. Agents know the difference.</div>
   </div>
   <div class="stat reveal" style="animation-delay:0.2s">
     <div class="stat-num">Open</div>
