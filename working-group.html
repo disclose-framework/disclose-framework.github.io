@@ -4,7 +4,7 @@
   <link rel="icon" type="image/png" href="disclose_logo.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Working Group — Disclose Framework</title>
+  <title>Working Group — Disclose</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -45,32 +45,17 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 2rem 4rem;
+      padding: 1.4rem 4rem;
       border-bottom: 1px solid rgba(0,0,0,0.1);
     }
 
-    .logo-wrap {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+    .header-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
       opacity: 0;
       animation: fadeUp 0.6s ease forwards;
-      text-decoration: none;
-    }
-
-    .logo-wrap img {
-      width: 56px;
-      height: 56px;
-      object-fit: contain;
-    }
-
-    .logo-text {
-      font-family: 'DM Mono', monospace;
-      font-weight: 500;
-      font-size: 0.85rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--black);
     }
 
     nav {
@@ -172,7 +157,7 @@
       color: var(--gray);
     }
 
-    /* Two-track section */
+    /* Three-track section */
     .tracks {
       position: relative;
       z-index: 10;
@@ -240,7 +225,7 @@
 
     .track-questions li:last-child { border-bottom: none; }
 
-    /* What you're signing up for */
+    /* What this is */
     .commitment {
       position: relative;
       z-index: 10;
@@ -259,8 +244,6 @@
       color: var(--gray);
       padding-top: 0.4rem;
     }
-
-    .commitment-content {}
 
     .commitment-title {
       font-family: 'DM Serif Display', serif;
@@ -327,8 +310,6 @@
       color: rgba(255,255,255,0.3);
       padding-top: 0.4rem;
     }
-
-    .contact-content {}
 
     .contact-title {
       font-family: 'DM Serif Display', serif;
@@ -428,11 +409,10 @@
     .reveal.visible { animation: fadeUp 0.6s ease forwards; }
 
     @media (max-width: 900px) {
-      header { padding: 1.5rem 2rem; }
+      header { padding: 1.2rem 2rem; }
       nav { display: none; }
       .page-header, .argument, .commitment, .contact { grid-template-columns: 1fr; gap: 1.5rem; padding: 4rem 2rem; }
       .tracks { grid-template-columns: 1fr; }
-
       .track { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 3rem 2rem; }
       .commitment-items { grid-template-columns: 1fr; }
       .commitment-item { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); }
@@ -445,10 +425,7 @@
   <div class="grid-bg"></div>
 
   <header>
-    <a href="/" class="logo-wrap">
-      <img src="disclose_logo.png" alt="Disclose Framework">
-      <span class="logo-text">Disclose Framework</span>
-    </a>
+    <span class="header-tag">Open Standard / V0.3 / MIT License</span>
     <nav>
       <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
       <a href="/#overview">Overview</a>
@@ -465,7 +442,7 @@
         shaped <em>right now.</em>
       </h1>
       <p class="page-header-body">
-        Agentic commerce is going to need structured merchant performance data. That is not a question. The only question is whether the standard that emerges is open or proprietary. The working group exists to make sure it's open, and to make sure the people who understand the problem have a hand in defining it.
+        Agentic commerce is going to need structured operational performance data. That is not a question. The only question is whether the standard that emerges is open or proprietary. The working group exists to make sure it's open, and to make sure the people who understand the problem have a hand in defining it.
       </p>
     </div>
   </section>
@@ -482,7 +459,7 @@
       <div class="track-tag">For Merchants</div>
       <h2 class="track-title">What signals actually matter to a buyer's agent</h2>
       <p class="track-body">
-        The spec defines 61 signals across 12 categories. Not all of them are equally useful at the moment of a purchasing decision. Merchants in the working group help us understand which signals they can produce reliably, which ones they'd actually want to surface, and where the spec asks for data that doesn't exist cleanly in practice.
+        The spec defines signals across multiple categories. Not all of them are equally useful at the moment of a purchasing decision. Merchants in the working group help us understand which signals they can produce reliably, which ones they'd actually want to surface, and where the spec asks for data that doesn't exist cleanly in practice.
       </p>
       <ul class="track-questions">
         <li>Which of your operational metrics would you want an agent to see?</li>
@@ -495,20 +472,20 @@
       <div class="track-tag">For Signatories</div>
       <h2 class="track-title">What you can attest to, and what you can't</h2>
       <p class="track-body">
-        Signatories are the organizations that hold merchant performance data directly: returns platforms, logistics providers, payment processors, review services. The working group needs to know what attestation looks like in practice, what data can be exposed safely, what can be kept updated, and where the liability and technical limits actually are.
+        Signatories are the organizations that hold operational performance data directly: returns platforms, logistics providers, payment processors, review services. The working group needs to know what attestation looks like in practice, what data can be exposed safely, and where the liability and technical limits actually are.
       </p>
       <ul class="track-questions">
         <li>Which signals in the schema map to data you already hold?</li>
         <li>What can you attest to safely, and what carries too much exposure?</li>
         <li>How frequently could attestations be refreshed?</li>
-        <li>The spec allows Signatories to publish vertical benchmarks alongside attestations — median and p90 values across your merchant portfolio. Is that data you could expose, and at what granularity?</li>
+        <li>The spec allows Signatories to publish vertical benchmarks alongside attestations. Is that data you could expose, and at what granularity?</li>
       </ul>
     </div>
     <div class="track reveal" style="animation-delay: 0.2s">
       <div class="track-tag">For Infrastructure Builders</div>
       <h2 class="track-title">Where the spec breaks before it scales</h2>
       <p class="track-body">
-        Open standards fail in predictable ways: governance drift, platform capture, adoption incentives that erode over time. Infrastructure builders, organizations with experience shipping and stewarding open protocols, are the people most likely to see those failure modes early. The working group needs that perspective before the spec hardens, not after.
+        Open standards fail in predictable ways: governance drift, platform capture, adoption incentives that erode over time. Infrastructure builders with experience shipping and stewarding open protocols are the people most likely to see those failure modes early. The working group needs that perspective before the spec hardens.
       </p>
       <ul class="track-questions">
         <li>Where does the governance model create fragility?</li>
@@ -529,7 +506,7 @@
       <div class="commitment-items">
         <div class="commitment-item">
           <div class="commitment-item-num">01</div>
-          <div class="commitment-item-text">Review the signal definitions that are relevant to your organization and tell us where they're wrong, incomplete, or unworkable.</div>
+          <div class="commitment-item-text">Review the signal definitions relevant to your organization and tell us where they're wrong, incomplete, or unworkable.</div>
         </div>
         <div class="commitment-item">
           <div class="commitment-item-num">02</div>
@@ -551,10 +528,10 @@
         <em>The working group is being built now.</em>
       </h2>
       <p class="contact-body">
-        If the problem is real to you, reach out. Tell us who you are, which track is relevant (merchant/Signatory/infrastructure), and one thing about the current spec you'd want to push on. That's enough to start.
+        If the problem is real to you, reach out. Tell us who you are, which track is relevant (merchant, Signatory, or infrastructure), and one thing about the current spec you'd want to push on. That's enough to start.
       </p>
-      <a href="mailto:daniel@discloseframework.dev?subject=Working Group" class="contact-email">
-        working-group@discloseframework.dev →
+      <a href="mailto:working-group@discloseprotocol.dev?subject=Working Group" class="contact-email">
+        working-group@discloseprotocol.dev →
       </a>
       <p class="contact-note">A form is coming. Email works for now.</p>
     </div>
@@ -562,12 +539,12 @@
 
   <footer>
     <div class="footer-left">
-      <img src="disclose_logo.png" alt="DF">
-      <span class="footer-copy">© 2026 Disclose Framework — Open Source, MIT License</span>
+      <img src="disclose_logo.png" alt="Disclose">
+      <span class="footer-copy">© 2026 Disclose — Open Source, MIT License</span>
     </div>
     <div class="footer-links">
       <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
-      <a href="https://discloseframework.dev">discloseframework.dev</a>
+      <a href="https://discloseprotocol.dev">discloseprotocol.dev</a>
     </div>
   </footer>
 
