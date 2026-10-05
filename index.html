@@ -761,7 +761,7 @@ footer {
             I'm about to buy from Liquid Muscle. What do you actually know about them?
           </div>
         </div>
-        <!-- TURN 2: Agent — policy + transact check -->
+        <!-- TURN 2: Agent - policy + transact check -->
         <div class="a-block anim" id="a2">
           <div class="t-header">checking known endpoints</div>
           <div class="t-row">
@@ -773,7 +773,7 @@ footer {
           </div>
           <div class="fade" id="policy-block">
             <div class="policy-block">
-              <div class="block-source">liquidmuscle.com — shipping &amp; returns</div>
+              <div class="block-source">liquidmuscle.com · shipping &amp; returns</div>
               · 14-day window, unopened only<br>
               · $15 CAD restocking fee<br>
               · Customer pays return shipping<br>
@@ -790,11 +790,11 @@ footer {
           <div class="fade" id="warn-note">
             <div class="warn-note">
               <div class="warn-label">agent flag</div>
-              Restrictive policy. UCP confirms they <em>can</em> transact — it says nothing about performance. Checking Disclose.
+              Restrictive policy. UCP confirms they <em>can</em> transact. It says nothing about performance. Checking Disclose.
             </div>
           </div>
         </div>
-        <!-- TURN 3: Agent — Disclose MCP -->
+        <!-- TURN 3: Agent - Disclose MCP -->
         <div class="a-block anim" id="a3">
           <div class="t-header">Disclose MCP · disclose-mcp-server</div>
           <div class="t-row">
@@ -883,29 +883,29 @@ footer {
     <div class="feature-num">01 / Discovery</div>
     <h2 class="feature-title">One file. Any agent.</h2>
     <p class="feature-body">
-      Entities publish at <code>/.well-known/disclose</code> — the same convention as robots.txt, but for AI agents. No registry. No platform dependency. Any agent that knows the convention can find it.
+      Entities publish at <code>/.well-known/disclose</code>. Same idea as robots.txt, but for agents instead of crawlers. No registry to join, no platform to depend on. If an agent knows the convention, it can find the file.
     </p>
   </div>
   <div class="feature reveal" style="animation-delay:0.2s">
     <div class="feature-num">02 / Attestation</div>
     <h2 class="feature-title">Named Signatories. Staked reputations.</h2>
     <p class="feature-body">
-      Every signal carries an attestation level: signatory, computed, or self-reported. Agents can distinguish verified data from merchant-declared data before weighting it. Returns platforms, logistics providers, and payment processors can stake their reputation on the data they already hold. The tiers are defined in the spec — signatory pilots are next.
+      Every signal says how it was produced: signed by a Signatory, computed from platform data, or self-reported by the merchant. Agents weight the data accordingly. The companies that already hold this data (returns platforms, logistics providers, payment processors) can stake their reputation on it. The tiers are in the spec. Signatory pilots come next.
     </p>
   </div>
   <div class="feature reveal" style="animation-delay:0.3s">
     <div class="feature-num">03 / Architecture</div>
     <h2 class="feature-title">Three scopes. One document.</h2>
     <p class="feature-body">
-      Signals are published at Merchant, Offer, or Item scope. An agent comparing the same product across two sellers can read entity-level performance, SKU-level data, and item-level attributes — all from a single endpoint.
+      Signals live at three scopes: Merchant, Offer, Item. An agent comparing one product across two sellers gets entity-level performance, SKU-level data, and item-level attributes from a single endpoint.
     </p>
   </div>
 </section>
 <section class="manifesto">
   <div class="manifesto-label reveal">Premise</div>
   <div class="manifesto-text reveal" style="animation-delay:0.1s; line-height:1.15;">
-    AI agents are becoming the layer that decides what gets bought. They read what's machine-readable — which today means price, reviews, availability, and whatever merchants claim about themselves. The operational record is missing: return rates, on-time shipment, how refunds and disputes actually play out. That data exists. Merchants, platforms, and payment processors hold it already. Agents just can't see it.<br><br>
-    Disclose is a schema for publishing that record at a well-known URL — core operational signals, each declared signatory-attested, computed, or self-reported. <em>No scores. No badges.</em> No verdicts. The agent reads the data and draws its own conclusions.<br><br>
+    AI agents are becoming the layer that decides what gets bought. They can only read what is machine-readable. Today that means price, reviews, availability, and whatever merchants claim about themselves. The operational record is missing: return rates, on-time shipment, how refunds and disputes actually resolve. That data exists. Merchants, platforms, and payment processors already hold it. Agents just cannot see it.<br><br>
+    Disclose is a schema for publishing that record at a well-known URL. Core operational signals, each one declared signatory-attested, computed, or self-reported. <em>No scores. No badges.</em> No verdicts. The agent reads the data and draws its own conclusions.<br><br>
     Starting with commerce, where the data already lives.
   </div>
 </section>
@@ -914,40 +914,38 @@ footer {
   <div class="proof-content">
     <h2 class="proof-title reveal">The policy text is the worst case. The data is what actually happens.</h2>
     <p class="proof-body reveal" style="animation-delay:0.1s">
-      Every signal carries an attestation level — how the value was produced, declared up front. No scores. No badges. No verdicts. Just provenance, so agents can weight the data themselves.
+      Every signal declares how it was produced, up front. No scores, no badges, no verdicts. Just provenance, so the agent can weight the data itself.
     </p>
     <div class="proof-tiers reveal" style="animation-delay:0.2s">
       <div class="tier">
         <span class="att att-signatory">signatory</span>
-        <p>Cryptographically signed by an authorized Signatory with direct access to source data. The Signatory is accountable for the signal within its scope.</p>
+        <p>Signed by a Signatory with direct access to the source data. The Signatory stands behind the signal.</p>
       </div>
       <div class="tier">
         <span class="att att-computed">computed</span>
-        <p>Pulled from a source system or platform API and calculated by a third-party tool. Harder to manipulate than self-reported data — but carries no Signatory accountability.</p>
+        <p>Computed from platform or source-system data by a third party. Harder to fake than self-reported data, but no Signatory stands behind it.</p>
       </div>
       <div class="tier">
         <span class="att att-none">self-reported</span>
-        <p>Merchant-declared. No third-party computation or signature. Agents weight accordingly.</p>
+        <p>Declared by the merchant. No third-party computation, no signature. The agent weights it accordingly.</p>
       </div>
     </div>
-    <p class="proof-footnote reveal" style="animation-delay:0.3s"><em>Seven signals. One endpoint. No inference required.</em></p>
+    <p class="proof-footnote reveal" style="animation-delay:0.3s"><em>Seven signals, one endpoint, nothing to infer.</em></p>
   </div>
 </section>
 <section class="manifesto">
   <div class="manifesto-label reveal">Governance</div>
   <div class="manifesto-text reveal" style="animation-delay:0.1s;">
-    Disclose is MIT-licensed. The spec is designed to be owned by no single company —
-    not by a platform, not by a Signatory, and not by its founder.<br><br>
-    <em>Independent governance is an open question — the working group is where it gets answered.</em>
+    Disclose is MIT-licensed. No single company owns the spec. Not a platform, not a Signatory, not the founder.<br><br>
+    <em>Independent governance is still an open question. The working group exists to answer it.</em>
   </div>
 </section>
 <section class="working-group" id="working-group">
   <div class="working-group-label reveal">Working Group</div>
   <div class="working-group-content">
-    <h2 class="working-group-title reveal">The spec exists. The working group is in its first cohort.</h2>
+    <h2 class="working-group-title reveal">The spec exists. Now it needs contact with real data.</h2>
     <p class="working-group-body reveal" style="animation-delay:0.1s">
-      Disclose is moving beyond a framework. The schema exists. The next step is determining whether it survives contact with real data.
-We're looking for merchants, signatories, and infrastructure builders willing to test assumptions, challenge the model, and identify gaps before they become standards.
+      The schema is written. What it needs now is contact with real data. We're looking for merchants, signatories, and infrastructure builders willing to test the assumptions, break the model, and find the gaps before they become standards.
     </p>
     <div class="working-group-actions reveal" style="animation-delay:0.2s">
       <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-secondary">Read the Spec</a>
@@ -971,14 +969,14 @@ We're looking for merchants, signatories, and infrastructure builders willing to
 </section>
 <section class="cta">
   <div class="cta-text">
-    The spec is live. <em>The working group is open.</em>
+    The spec is a draft. <em>The working group is open.</em>
   </div>
   <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-primary">Read the Spec →</a>
 </section>
 <footer>
   <div class="footer-left">
     <img src="disclose_logo.png" alt="Disclose">
-    <span class="footer-copy">© 2026 Disclose — Open Source, MIT License · Spec v0.3 draft · Oct 2026</span>
+    <span class="footer-copy">© 2026 Disclose · Open Source, MIT License · Spec v0.3 draft · Oct 2026</span>
   </div>
   <div class="footer-links">
     <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
