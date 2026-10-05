@@ -800,7 +800,7 @@ footer {
           <div class="t-row">
             <div class="t-icon t-icon-d"><img src="disclose_logo.png" style="width:100%;height:100%;object-fit:contain;display:block;"></div>
             <div style="flex:1;min-width:0;">
-              <div class="t-call fade" id="mcp-call"><span class="t-arrow">→</span> get_merchant_disclosure(domain="liquidmuscle.com")</div>
+              <div class="t-call" id="mcp-call"><span class="t-arrow">→</span> get_merchant_disclosure(domain="liquidmuscle.com")</div>
               <div class="t-result fade" id="pill-disclose">200 · application/json · 7 signals</div>
             </div>
           </div>
@@ -904,10 +904,9 @@ footer {
 <section class="manifesto">
   <div class="manifesto-label reveal">Premise</div>
   <div class="manifesto-text reveal" style="animation-delay:0.1s; line-height:1.15;">
-    As AI agents become a new decision-making layer for commerce, operational data becomes infrastructure.<br><br>
-    Price. Reviews. Self-Attested Certificates. Availability. That's what agents read today. Not return rates. Not fulfillment accuracy. Not chargeback ratios.<br><br>
-    The operational layer exists. Agents just can't see it.<br><br> Disclose is the schema that makes operational data readable for agents to act with confidence instead of inference.<br><br> <em>No scores. No badges.</em><br><br>
-    Starting with commerce. Built to go further.
+    AI agents are becoming the layer that decides what gets bought. They read what's machine-readable — which today means price, reviews, availability, and whatever merchants claim about themselves. The operational record is missing: return rates, on-time shipment, how refunds and disputes actually play out. That data exists. Merchants, platforms, and payment processors hold it already. Agents just can't see it.<br><br>
+    Disclose is a schema for publishing that record at a well-known URL — core operational signals, each declared signatory-attested, computed, or self-reported. <em>No scores. No badges.</em> No verdicts. The agent reads the data and draws its own conclusions.<br><br>
+    Starting with commerce, where the data already lives.
   </div>
 </section>
 <section class="proof" id="proof">
@@ -1004,11 +1003,10 @@ const steps = [
   { id: 'policy-block',  delay: 500  },
   { id: 'pill-ucp',      delay: 750  },
   { id: 'warn-note',     delay: 700  },
-  { id: 'a3',            delay: 1200 },
-  { id: 'mcp-call',      delay: 800  },
-  { id: 'pill-disclose', delay: 1100 },
-  { id: 'json-wrap',     delay: 600  },
-  { id: 'attest-wrap',   delay: 700  },
+  { id: 'a3',            delay: 1000 },
+  { id: 'pill-disclose', delay: 700  },
+  { id: 'json-wrap',     delay: 500  },
+  { id: 'attest-wrap',   delay: 550  },
   { id: 'row-0',         delay: 150  },
   { id: 'row-1',         delay: 140  },
   { id: 'row-2',         delay: 140  },
