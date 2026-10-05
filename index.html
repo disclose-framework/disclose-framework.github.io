@@ -332,6 +332,53 @@ nav a:hover { color: var(--black); }
 .v-blue   { color: #5090ff !important; font-weight: 500; }
 .v-purple { color: #a07aff !important; font-weight: 500; }
 .v-amber  { color: #e8a030 !important; font-weight: 500; }
+/* MCP tool call */
+.t-call {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09);
+  padding: 0.45rem 0.7rem;
+  margin: 0.35rem 0 0.15rem;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+.t-call .t-arrow { color: #2ecc8a; }
+/* JSON wire block */
+.json-block {
+  margin: 0.5rem 0 0.4rem 1.4rem;
+  border-left: 1px solid rgba(46,204,138,0.3);
+  padding: 0.55rem 0.8rem;
+  background: rgba(0,0,0,0.28);
+}
+.json-source { color: rgba(46,204,138,0.35); }
+.json-code {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.55);
+  white-space: pre;
+  overflow-x: auto;
+  margin-top: 0.45rem;
+}
+.j-k { color: rgba(120,180,255,0.8); }
+.j-s { color: rgba(46,204,138,0.75); }
+.j-n { color: rgba(232,160,48,0.8); }
+.j-p { color: rgba(255,255,255,0.32); }
+.j-dim { color: rgba(255,255,255,0.22); font-style: italic; }
+/* Attestation badges */
+.att {
+  display: inline-block;
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.12rem 0.5rem;
+  border: 1px solid;
+  white-space: nowrap;
+}
+.att-signatory { color: #2ecc8a; border-color: rgba(46,204,138,0.4); background: rgba(46,204,138,0.07); }
+.att-computed  { color: #5090ff; border-color: rgba(80,144,255,0.4);  background: rgba(80,144,255,0.07); }
+.att-none      { color: rgba(255,255,255,0.38); border-color: rgba(255,255,255,0.16); }
 /* Verdict */
 .verdict-line {
   margin-top: 0.9rem;
@@ -343,15 +390,15 @@ nav a:hover { color: var(--black); }
   color: rgba(255,255,255,0.45);
   line-height: 1.5;
 }
-.verdict-line strong {
-  font-style: normal;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #2ecc8a;
+.verdict-sub {
   display: block;
-  margin-top: 0.35rem;
+  margin-top: 0.55rem;
+  font-family: 'DM Mono', monospace;
+  font-style: normal;
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  color: rgba(255,255,255,0.38);
+  line-height: 1.75;
 }
 /* Panel footer */
 .panel-footer {
@@ -466,6 +513,32 @@ nav a:hover { color: var(--black); }
   font-size: 0.95rem;
   color: var(--gray);
 }
+/* Attestation tiers (light section) */
+.proof-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.4rem;
+  margin: 0 0 2.2rem;
+  max-width: 900px;
+}
+.tier {
+  border-top: 1px solid rgba(0,0,0,0.12);
+  padding-top: 1rem;
+}
+.tier p {
+  font-size: 0.8rem;
+  line-height: 1.75;
+  color: #555550;
+  margin-top: 0.7rem;
+  max-width: 30ch;
+}
+.proof-tiers .att-none { color: rgba(0,0,0,0.45); border-color: rgba(0,0,0,0.22); }
+@media (max-width: 900px) {
+  .proof-tiers { grid-template-columns: 1fr; }
+}
+/* Essay link */
+.manifesto-text a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.essay-link { font-size: 0.8rem; color: var(--gray); }
 /* ── WORKING GROUP ── */
 .working-group {
   position: relative;
@@ -682,18 +755,18 @@ footer {
           <div class="panel-dot"></div>
           <span class="panel-label" style="margin-left:0.4rem;">agent runtime</span>
         </div>
-        <span class="panel-status">live</span>
+        <span class="panel-status">simulated preview</span>
       </div>
       <div class="panel-chat">
         <!-- TURN 1: User -->
         <div class="u-row anim" id="u1">
           <div class="u-bubble">
-            About to buy from Liquid Muscle. Pull everything you have on them before I confirm.
+            I'm about to buy from Liquid Muscle. What do you actually know about them?
           </div>
         </div>
-        <!-- TURN 2: Agent — policy + UCP -->
+        <!-- TURN 2: Agent - policy + transact check -->
         <div class="a-block anim" id="a2">
-          <div class="t-header">checking shipping policy + agent endpoints</div>
+          <div class="t-header">checking known endpoints</div>
           <div class="t-row">
             <div class="t-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
             <div>
@@ -703,84 +776,93 @@ footer {
           </div>
           <div class="fade" id="policy-block">
             <div class="policy-block">
-              <div class="block-source">liquidmuscle.com — shipping &amp; returns</div>
+              <div class="block-source">liquidmuscle.com · shipping &amp; returns</div>
               · 14-day window, unopened only<br>
               · $15 CAD restocking fee<br>
               · Customer pays return shipping<br>
               · No exchanges
             </div>
           </div>
-          <div class="t-row" style="margin-top:0.3rem;">
+          <div class="t-row fade" id="row-ucp" style="margin-top:0.3rem;">
             <div class="t-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
             <div>
               <div class="t-name">fetch /.well-known/ucp</div>
-              <div class="t-result fade" id="pill-ucp">result</div>
-            </div>
-          </div>
-          <div class="fade" id="ucp-block">
-            <div class="ucp-block">
-              <div class="block-source">liquidmuscle.com/.well-known/ucp</div>
-              Shopify UCP v2026-04-08 — checkout, fulfillment, Google Pay, Shop Pay confirmed.
+              <div class="t-result fade" id="pill-ucp">transact capability confirmed</div>
             </div>
           </div>
           <div class="fade" id="warn-note">
             <div class="warn-note">
               <div class="warn-label">agent flag</div>
-              Return policy is restrictive. Transact capability confirmed. No verified performance data at these endpoints. Check Disclose before proceeding?
+              Restrictive policy. UCP confirms they <em>can</em> transact. It says nothing about performance. Checking Disclose.
             </div>
           </div>
         </div>
-        <!-- TURN 3: User -->
-        <div class="u-row anim" id="u3">
-          <div class="u-bubble">
-            Yes, is there any Disclose verified performance data available?
-          </div>
-        </div>
-        <!-- TURN 4: Agent — Disclose -->
-        <div class="a-block anim" id="a4">
-          <div class="t-header">Disclose MCP</div>
+        <!-- TURN 3: Agent - Disclose MCP -->
+        <div class="a-block anim" id="a3">
+          <div class="t-header">Disclose MCP · disclose-mcp-server</div>
           <div class="t-row">
             <div class="t-icon t-icon-d"><img src="disclose_logo.png" style="width:100%;height:100%;object-fit:contain;display:block;"></div>
-            <div>
-              <div class="t-name">Get merchant disclosure — liquidmuscle.com</div>
-              <div class="t-result fade" id="pill-disclose">result</div>
+            <div style="flex:1;min-width:0;">
+              <div class="t-call" id="mcp-call"><span class="t-arrow">→</span> get_merchant_disclosure(domain="liquidmuscle.com")</div>
+              <div class="t-result fade" id="pill-disclose">200 · application/json · 7 signals</div>
             </div>
           </div>
-          <div class="t-row fade" id="done-row" style="margin-top:0.15rem;">
-            <div class="t-icon t-icon-done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-            <div class="t-name">done</div>
+          <div class="fade" id="json-wrap">
+            <div class="json-block">
+              <div class="block-source json-source">liquidmuscle.com/.well-known/disclose.json</div>
+<pre class="json-code"><span class="j-p">{</span>
+  <span class="j-k">"schema_version"</span><span class="j-p">:</span> <span class="j-s">"0.3"</span><span class="j-p">,</span>
+  <span class="j-k">"merchant_domain"</span><span class="j-p">:</span> <span class="j-s">"liquidmuscle.com"</span><span class="j-p">,</span>
+  <span class="j-k">"generated_at"</span><span class="j-p">:</span> <span class="j-s">"2026-10-04T00:00:00Z"</span><span class="j-p">,</span>
+  <span class="j-k">"signals"</span><span class="j-p">:</span> <span class="j-p">{</span>
+    <span class="j-k">"disclose:product_return_rate"</span><span class="j-p">:</span> <span class="j-p">{</span>
+      <span class="j-k">"value"</span><span class="j-p">:</span> <span class="j-n">0.021</span><span class="j-p">,</span>
+      <span class="j-k">"observation_window_days"</span><span class="j-p">:</span> <span class="j-n">90</span><span class="j-p">,</span>
+      <span class="j-k">"attestation_level"</span><span class="j-p">:</span> <span class="j-s">"signatory"</span><span class="j-p">,</span>
+      <span class="j-k">"methodology_version"</span><span class="j-p">:</span> <span class="j-s">"core-commerce-v0.1"</span>
+    <span class="j-p">},</span>
+    <span class="j-k">"disclose:on_time_shipment_rate"</span><span class="j-p">:</span> <span class="j-p">{</span>
+      <span class="j-k">"value"</span><span class="j-p">:</span> <span class="j-n">0.94</span><span class="j-p">,</span>
+      <span class="j-k">"observation_window_days"</span><span class="j-p">:</span> <span class="j-n">90</span><span class="j-p">,</span>
+      <span class="j-k">"attestation_level"</span><span class="j-p">:</span> <span class="j-s">"signatory"</span><span class="j-p">,</span>
+      <span class="j-k">"methodology_version"</span><span class="j-p">:</span> <span class="j-s">"core-commerce-v0.1"</span>
+    <span class="j-p">}</span><span class="j-p">,</span>
+    <span class="j-dim">… 5 more signals</span>
+  <span class="j-p">}</span>
+<span class="j-p">}</span></pre>
+            </div>
           </div>
-          <div class="fade" id="table-wrap" style="margin-top:0.85rem;">
-            <div class="sig-intro">All six V1 signals live. Liquid Muscle:</div>
+          <div class="fade" id="attest-wrap" style="margin-top:0.85rem;">
+            <div class="sig-intro">Seven Core Commerce signals. Attestation, not confidence:</div>
             <table class="sig-table">
               <thead>
                 <tr>
                   <th>Signal</th>
                   <th>Value</th>
-                  <th>Agent Confidence</th>
+                  <th>Attestation</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="fade" id="row-0"><td>Product return rate</td><td>0.06%</td><td class="v-green">Excellent</td></tr>
-                <tr class="fade" id="row-1"><td>On-time shipment</td><td>95%</td><td class="v-blue">Strong</td></tr>
-                <tr class="fade" id="row-2"><td>Refund processing</td><td>2.2 days</td><td class="v-green">Fast</td></tr>
-                <tr class="fade" id="row-3"><td>Chargeback rate</td><td>0.02%</td><td class="v-green">Very low</td></tr>
-                <tr class="fade" id="row-4"><td>Dispute win rate</td><td>98%</td><td class="v-purple">Exceptional</td></tr>
-                <tr class="fade" id="row-5"><td>Platform tenure</td><td>3,862 days</td><td class="v-amber">Long-established</td></tr>
+                <tr class="fade" id="row-0"><td>Product return rate</td><td>2.1%</td><td><span class="att att-signatory">signatory</span></td></tr>
+                <tr class="fade" id="row-1"><td>On-time shipment</td><td>94%</td><td><span class="att att-signatory">signatory</span></td></tr>
+                <tr class="fade" id="row-2"><td>Refund processing</td><td>3.8 days</td><td><span class="att att-computed">computed</span></td></tr>
+                <tr class="fade" id="row-3"><td>Chargeback rate</td><td>0.4%</td><td><span class="att att-signatory">signatory</span></td></tr>
+                <tr class="fade" id="row-4"><td>Dispute win rate</td><td>61%</td><td><span class="att att-none">self-reported</span></td></tr>
+                <tr class="fade" id="row-5"><td>Platform tenure</td><td>1,247 days</td><td><span class="att att-signatory">signatory</span></td></tr>
+                <tr class="fade" id="row-6"><td>Order accuracy</td><td>97.2%</td><td><span class="att att-computed">computed</span></td></tr>
               </tbody>
             </table>
           </div>
           <div class="fade" id="verdict">
             <div class="verdict-line">
               The policy text is a worst-case disclosure.<br>The data is what actually happens.
-              <strong>proceed with confidence ↗</strong>
+              <span class="verdict-sub">4 signatory-attested · 2 computed · 1 self-reported. Your call.</span>
             </div>
           </div>
         </div>
       </div>
       <div class="panel-footer">
-        <span class="panel-input">write a message</span>
-        <div class="panel-cursor"></div>
+        <span class="panel-input">simulated preview · illustrative data · field shapes match the v0.3 draft spec</span>
       </div>
     </div>
   </div>
@@ -804,31 +886,30 @@ footer {
     <div class="feature-num">01 / Discovery</div>
     <h2 class="feature-title">One file. Any agent.</h2>
     <p class="feature-body">
-      Entities publish at <code>/.well-known/disclose</code> — the same convention as robots.txt, but for AI agents. No registry. No platform dependency. Any agent that knows the convention can find it.
+      Entities publish at <code>/.well-known/disclose</code>. Same idea as robots.txt, but for agents instead of crawlers. No registry to join, no platform to depend on. If an agent knows the convention, it can find the file.
     </p>
   </div>
   <div class="feature reveal" style="animation-delay:0.2s">
     <div class="feature-num">02 / Attestation</div>
     <h2 class="feature-title">Named Signatories. Staked reputations.</h2>
     <p class="feature-body">
-      Every signal carries an attestation level: Signatory-attested or self-reported. Agents can distinguish between verified and self-reported data. Returns platforms, logistics providers, and payment processors can stake their reputation on the data they already hold. Signatory integrations are in active development.
+      Every signal says how it was produced: signed by a Signatory, computed from platform data, or self-reported by the merchant. Agents weight the data accordingly. The companies that already hold this data (returns platforms, logistics providers, payment processors) can stake their reputation on it. The tiers are in the spec. Signatory pilots come next.
     </p>
   </div>
   <div class="feature reveal" style="animation-delay:0.3s">
     <div class="feature-num">03 / Architecture</div>
     <h2 class="feature-title">Three scopes. One document.</h2>
     <p class="feature-body">
-      Signals are published at Merchant, Offer, or Item scope. An agent comparing the same product across two sellers can read entity-level performance, SKU-level data, and item-level attributes — all from a single endpoint.
+      Signals live at three scopes: Merchant, Offer, Item. An agent comparing one product across two sellers gets entity-level performance, SKU-level data, and item-level attributes from a single endpoint.
     </p>
   </div>
 </section>
 <section class="manifesto">
   <div class="manifesto-label reveal">Premise</div>
   <div class="manifesto-text reveal" style="animation-delay:0.1s; line-height:1.15;">
-    As AI agents become a new decision-making layer for commerce, operational data becomes infrastructure.<br><br>
-    Price. Reviews. Self-Attested Certificates. Availability. That's what agents read today. Not return rates. Not fulfillment accuracy. Not chargeback ratios.<br><br>
-    The operational layer exists. Agents just can't see it.<br><br> Disclose is the schema that makes operational data readable for agents to act with confidence instead of inference.<br><br> <em>No scores. No badges.</em><br><br>
-    Starting with commerce. Built to go further.
+    AI agents are becoming the layer that decides what gets bought. They can only read what is machine-readable. Today that means price, reviews, availability, and whatever merchants claim about themselves. The operational record is missing: return rates, on-time shipment, how refunds and disputes actually resolve. That data exists. Merchants, platforms, and payment processors already hold it. Agents just cannot see it.<br><br>
+    Disclose is a schema for publishing that record at a well-known URL. Core operational signals, each one declared signatory-attested, computed, or self-reported. <em>No scores. No badges.</em> No verdicts. The agent reads the data and draws its own conclusions.<br><br>
+    Starting with commerce, where the data already lives.
   </div>
 </section>
 <section class="proof" id="proof">
@@ -836,46 +917,48 @@ footer {
   <div class="proof-content">
     <h2 class="proof-title reveal">The policy text is the worst case. The data is what actually happens.</h2>
     <p class="proof-body reveal" style="animation-delay:0.1s">
-      An agent queries one merchant's Disclose endpoint and reads all six V1 signals at once — entity-level performance no review or policy page exposes. Here's a real example response.
+      Every signal declares how it was produced, up front. No scores, no badges, no verdicts. Just provenance, so the agent can weight the data itself.
     </p>
-    <div class="proof-table-wrap reveal" style="animation-delay:0.2s">
-      <div class="proof-source">Example merchant — merchant disclosure</div>
-      <table class="proof-table">
-        <thead>
-          <tr>
-            <th>Signal</th>
-            <th>Value</th>
-            <th>Agent Confidence</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Product return rate</td><td>0.06%</td><td class="v-green">Excellent</td></tr>
-          <tr><td>On-time shipment</td><td>95%</td><td class="v-blue">Strong</td></tr>
-          <tr><td>Refund processing</td><td>2.2 days</td><td class="v-green">Fast</td></tr>
-          <tr><td>Chargeback rate</td><td>0.02%</td><td class="v-green">Very low</td></tr>
-          <tr><td>Dispute win rate</td><td>98%</td><td class="v-purple">Exceptional</td></tr>
-          <tr><td>Platform tenure</td><td>3,862 days</td><td class="v-amber">Long-established</td></tr>
-        </tbody>
-      </table>
+    <div class="proof-tiers reveal" style="animation-delay:0.2s">
+      <div class="tier">
+        <span class="att att-signatory">signatory</span>
+        <p>Signed by a Signatory with direct access to the source data. The Signatory stands behind the signal.</p>
+      </div>
+      <div class="tier">
+        <span class="att att-computed">computed</span>
+        <p>Computed from platform or source-system data by a third party. Harder to fake than self-reported data, but no Signatory stands behind it.</p>
+      </div>
+      <div class="tier">
+        <span class="att att-none">self-reported</span>
+        <p>Declared by the merchant. No third-party computation, no signature. The agent weights it accordingly.</p>
+      </div>
     </div>
-    <p class="proof-footnote reveal" style="animation-delay:0.3s"><em>Six signals. One endpoint. No inference required.</em></p>
+    <p class="proof-footnote reveal" style="animation-delay:0.3s"><em>Seven signals, one endpoint, nothing to infer.</em></p>
+  </div>
+</section>
+<section class="manifesto">
+  <div class="manifesto-label reveal">The stakes</div>
+  <div class="manifesto-text reveal" style="animation-delay:0.1s; line-height:1.15;">
+    Agents are starting to decide what gets bought, and they need a way to judge who they are buying from. That need will be filled. The question is what fills it.<br><br>
+    The open version looks like this: merchants publish operational facts at an address they control, attestors stake their reputations on the figures, and each agent computes confidence for the principal it serves. The facts are shared. The conclusions are not. There is no score to own, so no platform can own the layer.<br><br>
+    The proprietary version is the same function under one company's governance, in its own incompatible format. The world's agents would read trustworthiness through a frame that company controls.<br><br>
+    Which version becomes the default is being decided now, before any standard has the adoption to lock it in. Disclose is the open one.<br><br>
+    <span class="essay-link">The full argument: <a href="https://medium.com/@danielwhitefield/the-confidence-layer-a3a0a6cd27ef" target="_blank">The Confidence Layer</a></span>
   </div>
 </section>
 <section class="manifesto">
   <div class="manifesto-label reveal">Governance</div>
   <div class="manifesto-text reveal" style="animation-delay:0.1s;">
-    Disclose is MIT-licensed. The spec is designed to be owned by no single company —
-    not by a platform, not by a Signatory, and not by its founder.<br><br>
-    <em>Independent governance is in formation. The working group is the first step.</em>
+    Disclose is MIT-licensed. No single company owns the spec. Not a platform, not a Signatory, not the founder.<br><br>
+    <em>Independent governance is still an open question. The working group exists to answer it.</em>
   </div>
 </section>
 <section class="working-group" id="working-group">
   <div class="working-group-label reveal">Working Group</div>
   <div class="working-group-content">
-    <h2 class="working-group-title reveal">The spec exists. The working group is in its first cohort.</h2>
+    <h2 class="working-group-title reveal">The spec exists. Now it needs contact with real data.</h2>
     <p class="working-group-body reveal" style="animation-delay:0.1s">
-      Disclose is moving beyond a framework. The schema exists. The next step is determining whether it survives contact with real data.
-We're looking for merchants, signatories, and infrastructure builders willing to test assumptions, challenge the model, and identify gaps before they become standards.
+      The schema is written. What it needs now is contact with real data. We're looking for merchants, signatories, and infrastructure builders willing to test the assumptions, break the model, and find the gaps before they become standards.
     </p>
     <div class="working-group-actions reveal" style="animation-delay:0.2s">
       <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-secondary">Read the Spec</a>
@@ -899,14 +982,14 @@ We're looking for merchants, signatories, and infrastructure builders willing to
 </section>
 <section class="cta">
   <div class="cta-text">
-    The spec is live. <em>The working group is open.</em>
+    The spec is a draft. <em>The working group is open.</em>
   </div>
   <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-primary">Read the Spec →</a>
 </section>
 <footer>
   <div class="footer-left">
     <img src="disclose_logo.png" alt="Disclose">
-    <span class="footer-copy">© 2026 Disclose — Open Source, MIT License</span>
+    <span class="footer-copy">© 2026 Disclose · Open Source, MIT License · Spec v0.3 draft · Oct 2026</span>
   </div>
   <div class="footer-links">
     <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
@@ -929,20 +1012,20 @@ const steps = [
   { id: 'a2',            delay: 750  },
   { id: 'pill-policy',   delay: 900  },
   { id: 'policy-block',  delay: 500  },
-  { id: 'pill-ucp',      delay: 750  },
-  { id: 'ucp-block',     delay: 500  },
-  { id: 'warn-note',     delay: 700  },
-  { id: 'u3',            delay: 1500 },
-  { id: 'a4',            delay: 850  },
-  { id: 'pill-disclose', delay: 1200 },
-  { id: 'done-row',      delay: 400  },
-  { id: 'table-wrap',    delay: 600  },
-  { id: 'row-0',         delay: 160  },
+  { id: 'row-ucp',       delay: 650  },
+  { id: 'pill-ucp',      delay: 700  },
+  { id: 'warn-note',     delay: 650  },
+  { id: 'a3',            delay: 1000 },
+  { id: 'pill-disclose', delay: 700  },
+  { id: 'json-wrap',     delay: 500  },
+  { id: 'attest-wrap',   delay: 550  },
+  { id: 'row-0',         delay: 150  },
   { id: 'row-1',         delay: 140  },
   { id: 'row-2',         delay: 140  },
   { id: 'row-3',         delay: 140  },
   { id: 'row-4',         delay: 140  },
   { id: 'row-5',         delay: 140  },
+  { id: 'row-6',         delay: 140  },
   { id: 'verdict',       delay: 600  },
 ];
 let timeouts = [];
