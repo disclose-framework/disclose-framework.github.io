@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/png" href="disclose_logo.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Disclose</title>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-59NTYX5R0B"></script>
-<script>
-window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', 'G-59NTYX5R0B');
-</script>
+<meta name="description" content="Disclose is an open standard for merchants to publish performance signals at /.well-known/disclose, so AI agents can compute their own confidence before checkout.">
+<meta property="og:title" content="Disclose: merchant performance signals for AI agents">
+<meta property="og:description" content="An open, MIT-licensed standard for publishing attested merchant performance signals where any agent can find them.">
+<meta property="og:url" content="https://discloseframework.dev">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://discloseframework.dev/disclose_protocol_logo.jpg">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/jpeg" href="disclose_protocol_logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --black: #0a0a0a;
-  --white: #f5f4f0;
-  --off:   #e8e6e0;
-  --gray:  #888880;
-  --accent:#1a1a1a;
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --text: #1c1c1a;
+  --muted: #6b6b66;
+  --line: rgba(0,0,0,0.09);
+  --accent: #1a1a1a;
+  --demo-bg: #111111;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; }
 body {
-  background: var(--white);
-  color: var(--black);
+  background: var(--bg);
+  color: var(--text);
   font-family: 'DM Mono', monospace;
+  line-height: 1.6;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 .grid-bg {
   position: fixed;
@@ -38,939 +40,569 @@ body {
   pointer-events: none;
   z-index: 0;
   background-image:
-    linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
+    linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
+  background-size: 64px 64px;
 }
-/* ── HEADER ── */
 header {
   position: relative;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.4rem 4rem;
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 1.2rem 3.5rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(247,246,242,0.92);
+  backdrop-filter: blur(8px);
 }
-.header-tag {
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
+.header-meta {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--gray);
-  opacity: 0;
-  animation: fadeUp 0.6s ease forwards;
+  color: var(--muted);
 }
-nav {
-  display: flex;
-  gap: 2.5rem;
-  opacity: 0;
-  animation: fadeUp 0.6s 0.1s ease forwards;
-}
+nav { display: flex; gap: 2rem; }
 nav a {
   font-size: 0.75rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gray);
+  letter-spacing: 0.04em;
+  color: var(--muted);
   text-decoration: none;
-  transition: color 0.2s;
 }
-nav a:hover { color: var(--black); }
-/* ── HERO ── */
+nav a:hover { color: var(--text); }
+
 .hero {
   position: relative;
   z-index: 10;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-height: calc(100vh - 57px);
+  grid-template-columns: 1fr 1.05fr;
+  min-height: calc(100vh - 64px);
+  border-bottom: 1px solid var(--line);
 }
-/* LEFT */
 .hero-left {
-  padding: calc(3rem + 60px) 4rem 5rem;
+  padding: 4.5rem 3.5rem 4rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-right: 1px solid rgba(0,0,0,0.1);
+  border-right: 1px solid var(--line);
 }
-/* D + wordmark lockup */
-.hero-brand {
+.brand {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0rem;
-  margin-bottom: 6rem;
-  opacity: 0;
-  animation: fadeUp 0.6s 0.15s ease forwards;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
 }
-.hero-brand img {
-  width: 160px;
-  height: 160px;
-  object-fit: contain;
-}
-.hero-brand-name {
-  font-family: 'DM Mono', monospace;
+.brand img { width: 42px; height: 42px; object-fit: contain; mix-blend-mode: multiply; }
+.brand-name {
   font-weight: 500;
-  font-size: 1.5rem;
-  letter-spacing: 0.15em;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--black);
 }
 .hero-title {
   font-family: 'DM Serif Display', serif;
-  font-size: clamp(2.8rem, 4.5vw, 5rem);
-  line-height: 1.05;
+  font-size: clamp(2.4rem, 3.8vw, 3.6rem);
+  line-height: 1.08;
   font-weight: 400;
-  letter-spacing: -0.02em;
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeUp 0.7s 0.28s ease forwards;
+  letter-spacing: -0.015em;
+  margin-bottom: 1.5rem;
 }
 .hero-body {
   font-size: 0.95rem;
-  line-height: 1.8;
-  color: #555550;
-  max-width: 50ch;
-  margin-bottom: 3rem;
-  opacity: 0;
-  animation: fadeUp 0.6s 0.4s ease forwards;
+  line-height: 1.75;
+  color: #4a4a46;
+  max-width: 48ch;
+  margin-bottom: 2.25rem;
 }
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  opacity: 0;
-  animation: fadeUp 0.6s 0.52s ease forwards;
-}
-/* RIGHT: demo panel */
+.hero-body + .hero-body { margin-top: -1.25rem; }
+.hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
 .hero-right {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4rem 4rem 4rem 3.5rem;
-  opacity: 0;
-  animation: fadeIn 1s 0.6s ease forwards;
-  overflow: hidden;
+  padding: 3rem 3rem 3rem 2.5rem;
+  background: #faf9f6;
 }
 .demo-panel {
   width: 100%;
-  max-width: 520px;
-  border: 1px solid rgba(0,0,0,0.14);
-  border-radius: 18px;
-  background: var(--black);
-  position: relative;
+  max-width: 540px;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  background: var(--demo-bg);
+  color: #e8e6e0;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-.demo-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 40px 40px;
+  font-size: 0.75rem;
 }
 .panel-bar {
-  position: relative;
-  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.7rem 1.1rem;
+  padding: 0.65rem 1rem;
   border-bottom: 1px solid rgba(255,255,255,0.06);
-  flex-shrink: 0;
-}
-.panel-bar-left { display: flex; align-items: center; gap: 0.4rem; }
-.panel-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.1); }
-.panel-label {
-  font-size: 0.6rem;
-  letter-spacing: 0.16em;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.18);
-  margin-left: 0.4rem;
-}
-.panel-status {
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.14);
-}
-.panel-chat {
-  position: relative;
-  z-index: 2;
-  padding: 1.4rem 1.4rem 1rem;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-/* Animation primitives */
-.anim {
-  opacity: 0;
-  transform: translateY(5px);
-  transition: opacity 0.32s ease, transform 0.32s ease;
-}
-.anim.on { opacity: 1; transform: translateY(0); }
-.fade { opacity: 0; transition: opacity 0.28s ease; }
-.fade.on { opacity: 1; }
-/* User bubble */
-.u-row { display: flex; justify-content: flex-end; margin-bottom: 1.1rem; }
-.u-bubble {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.09);
-  padding: 0.65rem 0.95rem;
-  max-width: 84%;
-  font-size: 0.75rem;
-  line-height: 1.65;
-  color: rgba(255,255,255,0.72);
-  letter-spacing: 0.01em;
-}
-/* Agent block */
-.a-block { margin-bottom: 0.9rem; }
-/* Tool header */
-.t-header {
-  font-size: 0.6rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.16);
-  margin-bottom: 0.55rem;
-}
-/* Tool row */
-.t-row { display: flex; align-items: flex-start; gap: 0.55rem; padding: 0.2rem 0; }
-.t-icon {
-  width: 16px; height: 16px;
-  flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  margin-top: 1px;
-}
-.t-icon svg { width: 12px; height: 12px; color: rgba(255,255,255,0.25); }
-.t-icon-d { background: #ffffff; border: 1px solid rgba(0,0,0,0.08); overflow: hidden; }
-.t-icon-done svg { color: #2ecc8a; width: 13px; height: 13px; }
-.t-name { font-size: 0.72rem; color: rgba(255,255,255,0.45); line-height: 1.4; }
-.t-result {
-  display: inline-block;
-  margin-top: 3px;
-  border: 1px solid rgba(255,255,255,0.07);
-  padding: 0 6px;
-  font-size: 0.58rem;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.18);
-}
-/* Policy block */
-.policy-block {
-  margin: 0.5rem 0 0.4rem 1.4rem;
-  border-left: 1px solid rgba(255,160,40,0.3);
-  padding: 0.55rem 0.8rem;
-  font-size: 0.68rem;
-  line-height: 1.8;
-  color: rgba(255,160,40,0.6);
-}
-.block-source {
-  font-size: 0.58rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  margin-bottom: 0.38rem;
-}
-.policy-block .block-source { color: rgba(255,160,40,0.3); }
-/* UCP block */
-.ucp-block {
-  margin: 0.5rem 0 0.4rem 1.4rem;
-  border-left: 1px solid rgba(80,140,255,0.3);
-  padding: 0.55rem 0.8rem;
-  font-size: 0.68rem;
-  line-height: 1.7;
-  color: rgba(80,140,255,0.6);
-}
-.ucp-block .block-source { color: rgba(80,140,255,0.3); }
-/* Agent flag */
-.warn-note {
-  margin: 0.6rem 0 0.8rem 0;
-  padding: 0.65rem 0.9rem;
-  border: 1px solid rgba(255,160,40,0.18);
-  background: rgba(255,160,40,0.035);
-  font-size: 0.7rem;
-  line-height: 1.7;
-  color: rgba(255,160,40,0.65);
-}
-.warn-label {
-  font-size: 0.58rem;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: rgba(255,160,40,0.35);
-  margin-bottom: 0.3rem;
-}
-/* Signal table */
-.sig-intro {
-  font-size: 0.7rem;
   color: rgba(255,255,255,0.35);
-  margin-bottom: 0.65rem;
-  line-height: 1.5;
 }
-.sig-table { width: 100%; border-collapse: collapse; }
-.sig-table thead tr { border-bottom: 1px solid rgba(255,255,255,0.07); }
-.sig-table th {
-  text-align: left;
-  font-size: 0.58rem;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.18);
-  padding: 0 0.7rem 0.5rem 0;
-  font-weight: 400;
+.panel-body { padding: 1.25rem 1.1rem 1.1rem; }
+.turn { margin-bottom: 1.1rem; }
+.turn:last-child { margin-bottom: 0; }
+.user {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 0.6rem 0.85rem;
+  border-radius: 6px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.75);
 }
-.sig-table td {
-  padding: 0.42rem 0.7rem 0.42rem 0;
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.4);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-}
-.sig-table td:nth-child(2) { color: rgba(255,255,255,0.25); }
-.v-green  { color: #2ecc8a !important; font-weight: 500; }
-.v-blue   { color: #5090ff !important; font-weight: 500; }
-.v-purple { color: #a07aff !important; font-weight: 500; }
-.v-amber  { color: #e8a030 !important; font-weight: 500; }
-/* Verdict */
-.verdict-line {
-  margin-top: 0.9rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  font-family: 'DM Serif Display', serif;
-  font-size: 0.98rem;
-  font-style: italic;
-  color: rgba(255,255,255,0.45);
-  line-height: 1.5;
-}
-.verdict-line strong {
-  font-style: normal;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.68rem;
+.agent-label {
+  font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #2ecc8a;
-  display: block;
-  margin-top: 0.35rem;
+  color: rgba(255,255,255,0.28);
+  margin-bottom: 0.45rem;
 }
-/* Panel footer */
+.tool-line { display: flex; gap: 0.5rem; align-items: flex-start; margin: 0.35rem 0; color: rgba(255,255,255,0.5); }
+.tool-line code { font-size: 0.72rem; color: #a8c5ff; }
+.table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.signal-table { width: 100%; border-collapse: collapse; margin: 0.6rem 0; font-size: 0.7rem; }
+.signal-table th, .signal-table td {
+  text-align: left;
+  padding: 0.35rem 0.75rem 0.35rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+}
+.signal-table th { color: rgba(255,255,255,0.28); font-weight: 400; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.tier-signatory { color: #a8e0b4 !important; }
+.note {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-left: 2px solid rgba(255,180,80,0.45);
+  background: rgba(255,180,80,0.06);
+  font-size: 0.7rem;
+  line-height: 1.6;
+  color: rgba(255,200,120,0.75);
+}
 .panel-footer {
-  position: relative;
-  z-index: 2;
-  padding: 0.65rem 1.1rem;
+  padding: 0.55rem 1rem;
   border-top: 1px solid rgba(255,255,255,0.05);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.22);
 }
-.panel-input { flex: 1; font-size: 0.65rem; color: rgba(255,255,255,0.12); letter-spacing: 0.04em; }
-.panel-cursor {
-  width: 5px; height: 11px;
-  background: rgba(255,255,255,0.18);
-  animation: blink 1.1s step-end infinite;
-}
-/* ── STATS ── */
+
 .stats {
   position: relative;
   z-index: 10;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid var(--line);
 }
-.stat {
-  padding: 2.5rem 4rem;
-  border-right: 1px solid rgba(0,0,0,0.1);
-  opacity: 0;
-  animation: fadeUp 0.5s ease forwards;
-}
+.stat { padding: 2rem 3.5rem; border-right: 1px solid var(--line); min-width: 0; }
 .stat:last-child { border-right: none; }
-.stat-num { font-family: 'DM Serif Display', serif; font-size: 2.5rem; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
-.stat-label { font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gray); }
-/* ── FEATURES ── */
+.stat-num { font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 0.3rem; overflow-wrap: anywhere; }
+.stat-label { font-size: 0.72rem; color: var(--muted); }
+
 .features {
   position: relative;
   z-index: 10;
-  border-top: 1px solid rgba(0,0,0,0.1);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  border-bottom: 1px solid var(--line);
 }
-.feature {
-  padding: 3.5rem 3rem;
-  border-right: 1px solid rgba(0,0,0,0.1);
-  opacity: 0;
-  animation: fadeUp 0.5s ease forwards;
-}
+.feature { padding: 2.75rem 3rem; border-right: 1px solid var(--line); }
 .feature:last-child { border-right: none; }
-.feature-num { font-size: 0.65rem; letter-spacing: 0.2em; color: var(--gray); margin-bottom: 1.5rem; }
-.feature-title { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 1rem; font-weight: 400; }
-.feature-body { font-size: 0.82rem; line-height: 1.8; color: #666660; }
-.feature-body code {
+.feature-num { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 0.9rem; }
+.feature-title { font-family: 'DM Serif Display', serif; font-size: 1.35rem; margin-bottom: 0.75rem; font-weight: 400; }
+.feature-body { font-size: 0.85rem; line-height: 1.7; color: #555550; }
+.feature-body code, .hero-body code, .section p code {
   font-family: 'DM Mono', monospace;
-  font-size: 0.78rem;
+  font-size: 0.88em;
   background: rgba(0,0,0,0.06);
-  padding: 0.1em 0.35em;
+  padding: 0.1em 0.3em;
   border-radius: 2px;
 }
-/* ── MANIFESTO ── */
-.manifesto {
+
+.section {
   position: relative;
   z-index: 10;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  padding: 6rem 4rem;
+  border-bottom: 1px solid var(--line);
+  padding: 4.5rem 3.5rem;
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 4rem;
-  align-items: start;
+  grid-template-columns: 140px 1fr;
+  gap: 3rem;
 }
-.manifesto-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); padding-top: 0.4rem; }
-.manifesto-text { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 2.5vw, 2.4rem); line-height: 1.4; font-weight: 400; }
-.manifesto-text em { font-style: italic; color: var(--gray); }
-/* ── PROOF ── */
-.proof {
-  position: relative;
-  z-index: 10;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  padding: 6rem 4rem;
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 4rem;
-  align-items: start;
+.section > div { min-width: 0; }
+.section-label { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-top: 0.3rem; }
+.section h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.3; font-weight: 400; margin-bottom: 1rem; }
+.section p { font-size: 0.9rem; line-height: 1.75; color: #4a4a46; max-width: 68ch; margin-bottom: 1.25rem; }
+.section p:last-child { margin-bottom: 0; }
+
+.tiers { max-width: 720px; margin: 1.5rem 0; display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); background: var(--surface); }
+.tier { padding: 1.1rem 1.1rem; border-right: 1px solid var(--line); }
+.tier:last-child { border-right: none; }
+.tier-name { font-size: 0.78rem; font-weight: 500; margin-bottom: 0.35rem; }
+.tier-desc { font-size: 0.75rem; line-height: 1.6; color: var(--muted); }
+
+.json-block {
+  max-width: 720px;
+  margin: 1.25rem 0;
+  background: var(--demo-bg);
+  color: rgba(255,255,255,0.7);
+  border-radius: 8px;
+  padding: 1.1rem 1.25rem;
+  font-size: 0.75rem;
+  line-height: 1.65;
+  overflow-x: auto;
+  white-space: pre;
 }
-.proof-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); padding-top: 0.4rem; }
-.proof-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 2.5vw, 2.3rem); line-height: 1.35; font-weight: 400; margin-bottom: 1.5rem; }
-.proof-body { font-size: 0.88rem; line-height: 1.9; color: #555550; max-width: 66ch; margin-bottom: 2.5rem; }
-.proof-table-wrap { margin-bottom: 2rem; }
-.proof-source { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); margin-bottom: 1.1rem; }
-.proof-table { width: 100%; max-width: 720px; border-collapse: collapse; }
-.proof-table thead tr { border-bottom: 1px solid rgba(0,0,0,0.12); }
-.proof-table th {
-  text-align: left;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--gray);
-  padding: 0 1rem 0.8rem 0;
-  font-weight: 400;
-}
-.proof-table td {
-  padding: 0.9rem 1rem 0.9rem 0;
-  font-size: 0.85rem;
-  color: var(--black);
-  border-bottom: 1px solid rgba(0,0,0,0.07);
-}
-.proof-table td:nth-child(2) { color: #555550; font-weight: 500; }
-.proof-footnote {
-  font-family: 'DM Serif Display', serif;
-  font-style: italic;
-  font-size: 0.95rem;
-  color: var(--gray);
-}
-/* ── WORKING GROUP ── */
-.working-group {
-  position: relative;
-  z-index: 10;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  padding: 6rem 4rem;
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 4rem;
-  align-items: start;
-}
-.working-group-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); padding-top: 0.4rem; }
-.working-group-title { font-family: 'DM Serif Display', serif; font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.3; font-weight: 400; margin-bottom: 1.5rem; }
-.working-group-body { font-size: 0.88rem; line-height: 1.9; color: #555550; max-width: 62ch; margin-bottom: 2rem; }
-.working-group-actions { display: flex; gap: 1rem; align-items: center; margin-bottom: 3rem; }
-/* ── APPLY FORM ── */
-.apply-block { max-width: 620px; }
-.apply-label {
-  display: block;
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--gray);
-  margin-bottom: 1rem;
-}
-.apply-row {
-  display: flex;
-  align-items: stretch;
-}
-.apply-select,
-.apply-email {
+.json-block .k { color: #a8c5ff; }
+.json-block .s { color: #e6c98f; }
+.json-block .n { color: #a8e0b4; }
+.footnote { font-style: italic; color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+
+.working-group-actions { display: flex; gap: 0.75rem; margin: 1.5rem 0; flex-wrap: wrap; }
+.apply-block { max-width: 580px; margin-top: 1.5rem; }
+.apply-label { display: block; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.6rem; }
+.apply-row { display: flex; }
+.apply-select, .apply-email, .apply-submit {
   font-family: 'DM Mono', monospace;
   font-size: 0.78rem;
-  color: var(--black);
-  background: var(--white);
-  border: 1px solid rgba(0,0,0,0.22);
-  padding: 0.85rem 1rem;
+  border: 1px solid rgba(0,0,0,0.18);
+  background: var(--surface);
+  padding: 0.75rem 0.9rem;
 }
-.apply-select {
-  flex-shrink: 0;
-  border-right: none;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  border-radius: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888880' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.7rem center;
-  background-size: 14px 14px;
-  padding-right: 2.1rem;
-}
-.apply-email {
-  flex: 1;
-  min-width: 0;
-  border-right: none;
-}
-.apply-email::placeholder { color: var(--gray); }
+.apply-select { border-right: none; appearance: none; padding-right: 2rem; }
+.apply-email { flex: 1; border-right: none; }
 .apply-submit {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  background: var(--text);
+  color: var(--bg);
+  border: 1px solid var(--text);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  white-space: nowrap;
-  padding: 0.85rem 1.6rem;
-  background: var(--black);
-  color: var(--white);
-  border: 1px solid var(--black);
   cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.2s;
 }
 .apply-submit:hover { background: #333; }
-.apply-submit:disabled { opacity: 0.5; cursor: default; }
-.apply-status {
-  margin-top: 0.9rem;
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
-  color: var(--gray);
-  min-height: 1em;
-}
-.apply-status.is-success { color: #1f8a5c; }
-.apply-status.is-error { color: #c44; }
-/* ── CTA ── */
+.apply-submit:disabled { opacity: 0.6; cursor: wait; }
+.honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.apply-status { margin-top: 0.6rem; font-size: 0.75rem; color: var(--muted); min-height: 1em; }
+.apply-status.is-success { color: #2f6b3a; }
+.apply-status.is-error { color: #a33a2a; }
+
 .cta {
   position: relative;
   z-index: 10;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  background: var(--black);
-  color: var(--white);
-  padding: 5rem 4rem;
+  background: var(--text);
+  color: var(--bg);
+  padding: 3.5rem 3.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 2rem;
 }
-.cta-text { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 3vw, 3rem); font-weight: 400; }
-.cta-text em { font-style: italic; color: rgba(255,255,255,0.4); }
-.cta .btn-primary { background: var(--white); color: var(--black); flex-shrink: 0; }
-.cta .btn-primary:hover { background: var(--off); }
-/* ── BUTTONS ── */
-.btn-primary {
+.cta-text { font-family: 'DM Serif Display', serif; font-size: clamp(1.6rem, 2.4vw, 2.2rem); font-weight: 400; }
+.cta .btn-primary { background: var(--bg); color: var(--text); flex-shrink: 0; }
+.cta .btn-primary:hover { background: #e8e6e0; }
+
+.btn-primary, .btn-secondary {
   display: inline-block;
-  padding: 0.85rem 2rem;
-  background: var(--black);
-  color: var(--white);
+  padding: 0.75rem 1.5rem;
   font-family: 'DM Mono', monospace;
   font-size: 0.75rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: background 0.2s, transform 0.2s;
+  transition: transform 0.15s, background 0.15s;
 }
-.btn-primary:hover { background: #333; transform: translateY(-1px); }
-.btn-secondary {
-  display: inline-block;
-  padding: 0.85rem 2rem;
-  border: 1px solid rgba(0,0,0,0.2);
-  color: var(--black);
-  font-family: 'DM Mono', monospace;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: border-color 0.2s, transform 0.2s;
-}
-.btn-secondary:hover { border-color: var(--black); transform: translateY(-1px); }
-/* ── FOOTER ── */
+.btn-primary { background: var(--text); color: var(--bg); }
+.btn-primary:hover { background: #333; }
+.btn-secondary { border: 1px solid rgba(0,0,0,0.2); color: var(--text); }
+.btn-secondary:hover { border-color: var(--text); }
+
 footer {
   position: relative;
   z-index: 10;
-  border-top: 1px solid rgba(0,0,0,0.1);
-  padding: 2rem 4rem;
+  padding: 1.75rem 3.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-top: 1px solid var(--line);
+  font-size: 0.72rem;
+  color: var(--muted);
 }
-.footer-left { display: flex; align-items: center; gap: 0.75rem; }
-.footer-left img { width: 24px; height: 24px; object-fit: contain; }
-.footer-copy { font-size: 0.7rem; letter-spacing: 0.1em; color: var(--gray); }
-.footer-links { display: flex; gap: 2rem; }
-.footer-links a { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--black); }
-/* ── KEYFRAMES ── */
-@keyframes fadeUp  { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
-@keyframes blink   { 0%,100%{opacity:1} 50%{opacity:0} }
-.reveal { opacity: 0; }
-.reveal.visible { animation: fadeUp 0.6s ease forwards; }
-/* ── RESPONSIVE ── */
+.footer-left { display: flex; align-items: center; gap: 0.6rem; }
+.footer-left img { width: 22px; height: 22px; object-fit: contain; mix-blend-mode: multiply; }
+.footer-links { display: flex; gap: 1.75rem; }
+.footer-links a { color: var(--muted); text-decoration: none; }
+.footer-links a:hover { color: var(--text); }
+
 @media (max-width: 900px) {
-  header { padding: 1.2rem 2rem; }
+  header, .hero-left, .stat, .feature, .section, .cta, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
   nav { display: none; }
-  .hero { grid-template-columns: 1fr; min-height: auto; }
-  .hero-right { display: none; }
-  .hero-left { padding: 2.5rem 2rem 3rem; }
-  .hero-brand img { width: 80px; height: 80px; }
-.hero-brand-name { font-size: 1rem; }
-.hero-brand { margin-bottom: 2.5rem; }
-.hero-title { font-size: 2.4rem; }
+  .hero { grid-template-columns: 1fr; }
+  .hero-left { border-right: none; padding-top: 3rem; padding-bottom: 2.5rem; }
+  .hero-right { padding: 1.5rem; }
   .stats, .features { grid-template-columns: 1fr; }
-  .stat, .feature { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); padding: 2rem 2rem; }
-  .manifesto { grid-template-columns: 1fr; gap: 1.5rem; padding: 4rem 2rem; }
-  .proof { grid-template-columns: 1fr; gap: 1.5rem; padding: 4rem 2rem; }
-  .proof-table { max-width: 100%; }
-  .working-group { grid-template-columns: 1fr; gap: 1.5rem; padding: 4rem 2rem; }
-  .apply-block { max-width: 100%; }
+  .stat, .feature { border-right: none; border-bottom: 1px solid var(--line); }
+  .section { grid-template-columns: 1fr; gap: 0.75rem; padding-top: 3rem; padding-bottom: 3rem; }
+  .tiers { grid-template-columns: 1fr; }
+  .tier { border-right: none; border-bottom: 1px solid var(--line); }
+  .tier:last-child { border-bottom: none; }
+  .cta { flex-direction: column; text-align: center; }
+  footer { flex-direction: column; gap: 0.75rem; text-align: center; }
   .apply-row { flex-direction: column; }
-  .apply-select, .apply-email, .apply-submit { width: 100%; border-right: 1px solid rgba(0,0,0,0.22); }
-  .apply-select { border-bottom: none; }
-  .apply-email { border-bottom: none; }
-  .apply-submit { border: 1px solid var(--black); }
-  .cta { flex-direction: column; gap: 2rem; padding: 4rem 2rem; text-align: center; }
-  footer { flex-direction: column; gap: 1rem; padding: 2rem; text-align: center; }
+  .apply-select, .apply-email, .apply-submit { width: 100%; border: 1px solid rgba(0,0,0,0.18); }
+  .apply-select, .apply-email { border-bottom: none; }
 }
 </style>
 </head>
 <body>
 <div class="grid-bg"></div>
+
 <header>
-  <span class="header-tag">Open Standard / V0.3 / MIT License</span>
+  <span class="header-meta">Open Standard · v0.3 · MIT</span>
   <nav>
-    <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
+    <a href="https://github.com/disclose-framework" target="_blank" rel="noopener">GitHub</a>
     <a href="#overview">Overview</a>
     <a href="#features">Framework</a>
+    <a href="#signatories">Signatories</a>
     <a href="#working-group">Working Group</a>
   </nav>
 </header>
+
 <section class="hero" id="overview">
-  <!-- LEFT -->
   <div class="hero-left">
-    <!-- Brand lockup -->
-    <div class="hero-brand">
-      <img src="disclose_logo.png" alt="Disclose">
-      <span class="hero-brand-name">Disclose</span>
+    <div class="brand">
+      <img src="disclose_protocol_logo.jpg" alt="Disclose">
+      <span class="brand-name">Disclose</span>
     </div>
-    <h1 class="hero-title">
-      The open standard for operational disclosure.
-    </h1>
+    <h1 class="hero-title">Let any agent see how a merchant actually performs before it buys.</h1>
     <p class="hero-body">
-      Merchants, platforms, and service providers already hold operational data. Disclose makes it discoverable so AI agents can evaluate performance, not just marketing claims.
+      Agents can already read price, availability, reviews, and policy text. They still cannot reliably see refund speed, on-time shipment, chargeback ratios, or return rates. Disclose is an open standard for merchants to publish those performance signals at <code>/.well-known/disclose</code>.
+    </p>
+    <p class="hero-body">
+      No scores. No badges. The agent computes its own confidence from attested observations, weighted for the buyer it works for.
     </p>
     <div class="hero-actions">
-      <a href="https://github.com/disclose-framework" target="_blank" class="btn-primary">View on GitHub</a>
-      <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-secondary">Read the Spec</a>
+      <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" rel="noopener" class="btn-primary">Read the Spec</a>
+      <a href="https://github.com/disclose-framework" target="_blank" rel="noopener" class="btn-secondary">View on GitHub</a>
     </div>
   </div>
-  <!-- RIGHT: LLM demo panel -->
+
   <div class="hero-right">
     <div class="demo-panel">
       <div class="panel-bar">
-        <div class="panel-bar-left">
-          <div class="panel-dot"></div>
-          <div class="panel-dot"></div>
-          <div class="panel-dot"></div>
-          <span class="panel-label" style="margin-left:0.4rem;">agent runtime</span>
-        </div>
-        <span class="panel-status">live</span>
+        <span>agent · tool calls</span>
+        <span>illustrative</span>
       </div>
-      <div class="panel-chat">
-        <!-- TURN 1: User -->
-        <div class="u-row anim" id="u1">
-          <div class="u-bubble">
-            About to buy from Liquid Muscle. Pull everything you have on them before I confirm.
-          </div>
+      <div class="panel-body">
+        <div class="turn">
+          <div class="user">About to buy from shop.example. Check the policy, UCP capability, and any performance disclosure before I confirm.</div>
         </div>
-        <!-- TURN 2: Agent — policy + UCP -->
-        <div class="a-block anim" id="a2">
-          <div class="t-header">checking shipping policy + agent endpoints</div>
-          <div class="t-row">
-            <div class="t-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
-            <div>
-              <div class="t-name">fetch return policy</div>
-              <div class="t-result fade" id="pill-policy">result</div>
-            </div>
-          </div>
-          <div class="fade" id="policy-block">
-            <div class="policy-block">
-              <div class="block-source">liquidmuscle.com — shipping &amp; returns</div>
-              · 14-day window, unopened only<br>
-              · $15 CAD restocking fee<br>
-              · Customer pays return shipping<br>
-              · No exchanges
-            </div>
-          </div>
-          <div class="t-row" style="margin-top:0.3rem;">
-            <div class="t-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
-            <div>
-              <div class="t-name">fetch /.well-known/ucp</div>
-              <div class="t-result fade" id="pill-ucp">result</div>
-            </div>
-          </div>
-          <div class="fade" id="ucp-block">
-            <div class="ucp-block">
-              <div class="block-source">liquidmuscle.com/.well-known/ucp</div>
-              Shopify UCP v2026-04-08 — checkout, fulfillment, Google Pay, Shop Pay confirmed.
-            </div>
-          </div>
-          <div class="fade" id="warn-note">
-            <div class="warn-note">
-              <div class="warn-label">agent flag</div>
-              Return policy is restrictive. Transact capability confirmed. No verified performance data at these endpoints. Check Disclose before proceeding?
-            </div>
-          </div>
+        <div class="turn">
+          <div class="agent-label">fetching policy + endpoints</div>
+          <div class="tool-line"><code>GET /.well-known/ucp</code></div>
+          <div class="tool-line">UCP present. Checkout and fulfillment capabilities confirmed.</div>
+          <div class="tool-line"><code>GET /policies/refund-policy</code></div>
+          <div class="tool-line">30-day returns, customer pays return shipping, refunds "within 10 business days."</div>
+          <div class="note">Policy states the worst case. It says nothing about what actually happens. Checking Disclose.</div>
         </div>
-        <!-- TURN 3: User -->
-        <div class="u-row anim" id="u3">
-          <div class="u-bubble">
-            Yes, is there any Disclose verified performance data available?
-          </div>
-        </div>
-        <!-- TURN 4: Agent — Disclose -->
-        <div class="a-block anim" id="a4">
-          <div class="t-header">Disclose MCP</div>
-          <div class="t-row">
-            <div class="t-icon t-icon-d"><img src="disclose_logo.png" style="width:100%;height:100%;object-fit:contain;display:block;"></div>
-            <div>
-              <div class="t-name">Get merchant disclosure — liquidmuscle.com</div>
-              <div class="t-result fade" id="pill-disclose">result</div>
-            </div>
-          </div>
-          <div class="t-row fade" id="done-row" style="margin-top:0.15rem;">
-            <div class="t-icon t-icon-done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-            <div class="t-name">done</div>
-          </div>
-          <div class="fade" id="table-wrap" style="margin-top:0.85rem;">
-            <div class="sig-intro">All six V1 signals live. Liquid Muscle:</div>
-            <table class="sig-table">
+        <div class="turn">
+          <div class="agent-label">Disclose MCP · get_merchant_disclosure</div>
+          <div class="tool-line"><code>GET /.well-known/disclose</code></div>
+          <div class="table-wrap">
+            <table class="signal-table">
               <thead>
-                <tr>
-                  <th>Signal</th>
-                  <th>Value</th>
-                  <th>Agent Confidence</th>
-                </tr>
+                <tr><th>Signal</th><th>Value</th><th>Attestation</th></tr>
               </thead>
               <tbody>
-                <tr class="fade" id="row-0"><td>Product return rate</td><td>0.06%</td><td class="v-green">Excellent</td></tr>
-                <tr class="fade" id="row-1"><td>On-time shipment</td><td>95%</td><td class="v-blue">Strong</td></tr>
-                <tr class="fade" id="row-2"><td>Refund processing</td><td>2.2 days</td><td class="v-green">Fast</td></tr>
-                <tr class="fade" id="row-3"><td>Chargeback rate</td><td>0.02%</td><td class="v-green">Very low</td></tr>
-                <tr class="fade" id="row-4"><td>Dispute win rate</td><td>98%</td><td class="v-purple">Exceptional</td></tr>
-                <tr class="fade" id="row-5"><td>Platform tenure</td><td>3,862 days</td><td class="v-amber">Long-established</td></tr>
+                <tr><td>refund_processing_time_median_days</td><td>2.4</td><td>computed</td></tr>
+                <tr><td>on_time_shipment_rate</td><td>96.2%</td><td class="tier-signatory">signatory</td></tr>
+                <tr><td>chargeback_rate</td><td>0.31%</td><td>none</td></tr>
+                <tr><td>dispute_win_rate</td><td>61%</td><td>none</td></tr>
+                <tr><td>product_return_rate</td><td>4.8%</td><td>computed</td></tr>
+                <tr><td>platform_seller_tenure_days</td><td>1460</td><td>computed</td></tr>
               </tbody>
             </table>
           </div>
-          <div class="fade" id="verdict">
-            <div class="verdict-line">
-              The policy text is a worst-case disclosure.<br>The data is what actually happens.
-              <strong>proceed with confidence ↗</strong>
-            </div>
-          </div>
+          <div class="note">Policy says up to 10 business days. Observed median is 2.4. The agent decides how much weight each attestation level earns.</div>
         </div>
       </div>
-      <div class="panel-footer">
-        <span class="panel-input">write a message</span>
-        <div class="panel-cursor"></div>
-      </div>
+      <div class="panel-footer">illustrative merchant and values</div>
     </div>
   </div>
 </section>
+
 <div class="stats">
-  <div class="stat reveal">
-    <div class="stat-num">/.well-known/</div>
-    <div class="stat-label">The discovery path. No registry required.</div>
+  <div class="stat">
+    <div class="stat-num">/.well-known/disclose</div>
+    <div class="stat-label">Canonical discovery path. Same convention as robots.txt. No registry required.</div>
   </div>
-  <div class="stat reveal" style="animation-delay:0.1s">
-    <div class="stat-num">Attested</div>
-    <div class="stat-label">Signatory-signed or self-reported. Agents know the difference.</div>
+  <div class="stat">
+    <div class="stat-num">Three attestation levels</div>
+    <div class="stat-label">None (self-reported), computed, or signatory. Agents see the difference.</div>
   </div>
-  <div class="stat reveal" style="animation-delay:0.2s">
+  <div class="stat">
     <div class="stat-num">Open</div>
-    <div class="stat-label">MIT License. No platform owns it.</div>
+    <div class="stat-label">MIT licensed. Published on the merchant's own domain. No platform lock-in.</div>
   </div>
 </div>
+
 <section class="features" id="features">
-  <div class="feature reveal" style="animation-delay:0.1s">
-    <div class="feature-num">01 / Discovery</div>
-    <h2 class="feature-title">One file. Any agent.</h2>
+  <div class="feature">
+    <div class="feature-num">01 · Discovery</div>
+    <h2 class="feature-title">One file on the merchant's domain.</h2>
     <p class="feature-body">
-      Entities publish at <code>/.well-known/disclose</code> — the same convention as robots.txt, but for AI agents. No registry. No platform dependency. Any agent that knows the convention can find it.
+      Merchants publish a structured disclosure document at <code>/.well-known/disclose</code>. Agents that know the convention fetch it directly. Fallbacks exist for platforms that do not support the well-known path. No central registry of merchants is required.
     </p>
   </div>
-  <div class="feature reveal" style="animation-delay:0.2s">
-    <div class="feature-num">02 / Attestation</div>
-    <h2 class="feature-title">Named Signatories. Staked reputations.</h2>
+  <div class="feature">
+    <div class="feature-num">02 · Attestation</div>
+    <h2 class="feature-title">Source and strength are explicit.</h2>
     <p class="feature-body">
-      Every signal carries an attestation level: Signatory-attested or self-reported. Agents can distinguish between verified and self-reported data. Returns platforms, logistics providers, and payment processors can stake their reputation on the data they already hold. Signatory integrations are in active development.
+      Every signal carries an attestation level: <code>none</code> (self-reported), <code>computed</code> (pulled from a platform API), or <code>signatory</code> (cryptographically signed by a named third party). Agents decide how much weight each level earns.
     </p>
   </div>
-  <div class="feature reveal" style="animation-delay:0.3s">
-    <div class="feature-num">03 / Architecture</div>
-    <h2 class="feature-title">Three scopes. One document.</h2>
+  <div class="feature">
+    <div class="feature-num">03 · Scope</div>
+    <h2 class="feature-title">Merchant, offer, or item.</h2>
     <p class="feature-body">
-      Signals are published at Merchant, Offer, or Item scope. An agent comparing the same product across two sellers can read entity-level performance, SKU-level data, and item-level attributes — all from a single endpoint.
+      Signals can be published at merchant, offer, or item scope. An agent comparing the same product across two sellers can read entity-level performance and, when available, SKU or item-level attributes from the same endpoint.
     </p>
   </div>
 </section>
-<section class="manifesto">
-  <div class="manifesto-label reveal">Premise</div>
-  <div class="manifesto-text reveal" style="animation-delay:0.1s; line-height:1.15;">
-    As AI agents become a new decision-making layer for commerce, operational data becomes infrastructure.<br><br>
-    Price. Reviews. Self-Attested Certificates. Availability. That's what agents read today. Not return rates. Not fulfillment accuracy. Not chargeback ratios.<br><br>
-    The operational layer exists. Agents just can't see it.<br><br> Disclose is the schema that makes operational data readable for agents to act with confidence instead of inference.<br><br> <em>No scores. No badges.</em><br><br>
-    Starting with commerce. Built to go further.
+
+<section class="section">
+  <div class="section-label">Position</div>
+  <div>
+    <h2>Sits below discovery and above the transaction.</h2>
+    <p>
+      UCP and ACP handle product discovery and checkout. MCP is the tool layer most agents already use. AP2 covers payment authorization. None of them standardize merchant performance signals: refund processing time, on-time shipment, chargeback rates, dispute outcomes, return rates, or platform tenure.
+    </p>
+    <p>
+      UCP answers how to buy. Disclose answers whether to buy, and from whom. It supplies machine-readable evidence and nothing else. No scores, badges, rankings, or recommendations. Agents weight the signals by their own risk models and the buyer's context.
+    </p>
   </div>
 </section>
-<section class="proof" id="proof">
-  <div class="proof-label reveal">Proof</div>
-  <div class="proof-content">
-    <h2 class="proof-title reveal">The policy text is the worst case. The data is what actually happens.</h2>
-    <p class="proof-body reveal" style="animation-delay:0.1s">
-      An agent queries one merchant's Disclose endpoint and reads all six V1 signals at once — entity-level performance no review or policy page exposes. Here's a real example response.
+
+<section class="section" id="signatories">
+  <div class="section-label">Signatories</div>
+  <div>
+    <h2>A number is a claim. A Signatory makes it an argument.</h2>
+    <p>
+      The schema and the endpoint are easy to copy. What matters is who stands behind the data. A Signatory is a named third party that already holds a merchant's operational data and cryptographically signs specific signals. If the number is wrong, the Signatory's own reputation takes the hit.
     </p>
-    <div class="proof-table-wrap reveal" style="animation-delay:0.2s">
-      <div class="proof-source">Example merchant — merchant disclosure</div>
-      <table class="proof-table">
-        <thead>
-          <tr>
-            <th>Signal</th>
-            <th>Value</th>
-            <th>Agent Confidence</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Product return rate</td><td>0.06%</td><td class="v-green">Excellent</td></tr>
-          <tr><td>On-time shipment</td><td>95%</td><td class="v-blue">Strong</td></tr>
-          <tr><td>Refund processing</td><td>2.2 days</td><td class="v-green">Fast</td></tr>
-          <tr><td>Chargeback rate</td><td>0.02%</td><td class="v-green">Very low</td></tr>
-          <tr><td>Dispute win rate</td><td>98%</td><td class="v-purple">Exceptional</td></tr>
-          <tr><td>Platform tenure</td><td>3,862 days</td><td class="v-amber">Long-established</td></tr>
-        </tbody>
-      </table>
+    <div class="tiers">
+      <div class="tier">
+        <div class="tier-name">none</div>
+        <div class="tier-desc">Self-reported by the merchant. Useful, but unverified.</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">computed</div>
+        <div class="tier-desc">Calculated from platform data via API. Harder to fake.</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">signatory</div>
+        <div class="tier-desc">Signed by a named third party with something to lose.</div>
+      </div>
     </div>
-    <p class="proof-footnote reveal" style="animation-delay:0.3s"><em>Six signals. One endpoint. No inference required.</em></p>
-  </div>
-</section>
-<section class="manifesto">
-  <div class="manifesto-label reveal">Governance</div>
-  <div class="manifesto-text reveal" style="animation-delay:0.1s;">
-    Disclose is MIT-licensed. The spec is designed to be owned by no single company —
-    not by a platform, not by a Signatory, and not by its founder.<br><br>
-    <em>Independent governance is in formation. The working group is the first step.</em>
-  </div>
-</section>
-<section class="working-group" id="working-group">
-  <div class="working-group-label reveal">Working Group</div>
-  <div class="working-group-content">
-    <h2 class="working-group-title reveal">The spec exists. The working group is in its first cohort.</h2>
-    <p class="working-group-body reveal" style="animation-delay:0.1s">
-      Disclose is moving beyond a framework. The schema exists. The next step is determining whether it survives contact with real data.
-We're looking for merchants, signatories, and infrastructure builders willing to test assumptions, challenge the model, and identify gaps before they become standards.
+    <p>
+      Returns platforms, logistics providers, and payment processors are natural Signatories. The strongest are BNPL providers. They carry direct financial exposure when a merchant fails to deliver, so their attestations are backed by capital, not just reputation.
     </p>
-    <div class="working-group-actions reveal" style="animation-delay:0.2s">
-      <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-secondary">Read the Spec</a>
-      <a href="https://github.com/disclose-framework" target="_blank" class="btn-primary">Join on GitHub →</a>
+    <p>
+      Platforms attesting to their own merchants have a conflict of interest. Independent Signatories are the design choice that keeps the evaluation layer from belonging to any one platform.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="proof">
+  <div class="section-label">Example</div>
+  <div>
+    <h2>One endpoint. Provenance attached to every value.</h2>
+    <p>
+      An agent fetches a single disclosure document. Each signal arrives with its attestation level, observation window, and freshness metadata, so the agent knows what it is looking at and how recent it is.
+    </p>
+<pre class="json-block">{
+  <span class="k">"signal"</span>: <span class="s">"on_time_shipment_rate"</span>,
+  <span class="k">"value"</span>: <span class="n">0.962</span>,
+  <span class="k">"scope"</span>: <span class="s">"merchant"</span>,
+  <span class="k">"attestation_level"</span>: <span class="s">"signatory"</span>,
+  <span class="k">"signatory_name"</span>: <span class="s">"Example Logistics"</span>,
+  <span class="k">"window_start"</span>: <span class="s">"2026-07-01"</span>,
+  <span class="k">"window_end"</span>: <span class="s">"2026-09-30"</span>,
+  <span class="k">"generated_at"</span>: <span class="s">"2026-10-01T09:00:00Z"</span>
+}</pre>
+    <p class="footnote">Simplified and illustrative. See the spec for the full disclosure document. Agents interpret; the standard does not.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-label">Governance</div>
+  <div>
+    <h2>MIT licensed. Maintainer-led while the profile is validated.</h2>
+    <p>
+      Disclose is published as a framework, not a protocol. The distinction is intentional. The Core Commerce Profile, the merchant publishing model, the agent consumption model, and the Signatory registry are still being validated through implementation.
+    </p>
+    <p>
+      The specification is designed to be owned by no single company. Independent governance is the goal once merchants, agent platforms, infrastructure providers, and Signatories are participating. Every material change happens in public on GitHub.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="working-group">
+  <div class="section-label">Working Group</div>
+  <div>
+    <h2>The spec is live. The first cohort is forming.</h2>
+    <p>
+      The schema and reference tooling exist, including an MCP server agents can call to fetch disclosures. The next step is testing the model against real merchant data and real agent workflows.
+    </p>
+    <p>
+      We are looking for merchants willing to publish, potential Signatories willing to attest signals they already compute, and agent teams willing to consume the data and tell us what is missing.
+    </p>
+    <div class="working-group-actions">
+      <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" rel="noopener" class="btn-secondary">Read the Spec</a>
+      <a href="https://github.com/disclose-framework" target="_blank" rel="noopener" class="btn-primary">GitHub</a>
     </div>
-    <div class="apply-block reveal" style="animation-delay:0.3s">
-      <span class="apply-label">Apply to join</span>
+    <div class="apply-block">
+      <label class="apply-label" for="apply-email">Apply to join</label>
       <form class="apply-row" id="apply-form" action="https://formspree.io/f/xwvjdlad" method="POST">
-        <select name="role" class="apply-select" required>
+        <select name="role" class="apply-select" aria-label="Your role" required>
+          <option value="" disabled selected>I am a...</option>
           <option value="Merchant">Merchant</option>
           <option value="Signatory">Signatory</option>
           <option value="Infrastructure builder">Infrastructure builder</option>
+          <option value="Agent platform">Agent platform</option>
           <option value="Other">Other</option>
         </select>
-        <input type="email" name="email" class="apply-email" placeholder="you@company.com" required>
+        <input type="email" id="apply-email" name="email" class="apply-email" placeholder="you@company.com" required>
+        <input type="hidden" name="_subject" value="Disclose working group request">
+        <div class="honeypot" aria-hidden="true">
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+        </div>
         <button type="submit" class="apply-submit">Request to join</button>
       </form>
-      <p class="apply-status" id="apply-status"></p>
+      <p class="apply-status" id="apply-status" aria-live="polite"></p>
     </div>
   </div>
 </section>
+
 <section class="cta">
-  <div class="cta-text">
-    The spec is live. <em>The working group is open.</em>
-  </div>
-  <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" class="btn-primary">Read the Spec →</a>
+  <div class="cta-text">Agents should not have to guess.</div>
+  <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" rel="noopener" class="btn-primary">Read the Spec</a>
 </section>
+
 <footer>
   <div class="footer-left">
-    <img src="disclose_logo.png" alt="Disclose">
-    <span class="footer-copy">© 2026 Disclose — Open Source, MIT License</span>
+    <img src="disclose_protocol_logo.jpg" alt="Disclose">
+    <span>© 2026 Disclose · Open Source, MIT License</span>
   </div>
   <div class="footer-links">
-    <a href="https://github.com/disclose-framework" target="_blank">GitHub</a>
+    <a href="https://github.com/disclose-framework" target="_blank" rel="noopener">GitHub</a>
     <a href="https://discloseframework.dev">discloseframework.dev</a>
   </div>
 </footer>
+
 <script>
-/* ── Intersection reveals ── */
-const reveals = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
-  });
-}, { threshold: 0.15 });
-reveals.forEach(r => io.observe(r));
-/* ── Demo panel animation ── */
-const LOOP_PAUSE = 10000;
-const steps = [
-  { id: 'u1',            delay: 700  },
-  { id: 'a2',            delay: 750  },
-  { id: 'pill-policy',   delay: 900  },
-  { id: 'policy-block',  delay: 500  },
-  { id: 'pill-ucp',      delay: 750  },
-  { id: 'ucp-block',     delay: 500  },
-  { id: 'warn-note',     delay: 700  },
-  { id: 'u3',            delay: 1500 },
-  { id: 'a4',            delay: 850  },
-  { id: 'pill-disclose', delay: 1200 },
-  { id: 'done-row',      delay: 400  },
-  { id: 'table-wrap',    delay: 600  },
-  { id: 'row-0',         delay: 160  },
-  { id: 'row-1',         delay: 140  },
-  { id: 'row-2',         delay: 140  },
-  { id: 'row-3',         delay: 140  },
-  { id: 'row-4',         delay: 140  },
-  { id: 'row-5',         delay: 140  },
-  { id: 'verdict',       delay: 600  },
-];
-let timeouts = [];
-function reset() {
-  timeouts.forEach(clearTimeout);
-  timeouts = [];
-  steps.forEach(s => {
-    const el = document.getElementById(s.id);
-    if (el) el.classList.remove('on');
-  });
-}
-function play() {
-  let t = 600;
-  steps.forEach((s, i) => {
-    t += s.delay;
-    const to = setTimeout(() => {
-      const el = document.getElementById(s.id);
-      if (el) el.classList.add('on');
-      if (i === steps.length - 1) {
-        const lt = setTimeout(() => { reset(); setTimeout(play, 600); }, LOOP_PAUSE);
-        timeouts.push(lt);
-      }
-    }, t);
-    timeouts.push(to);
-  });
-}
-play();
-/* ── Apply-to-join form (Formspree) ── */
 const applyForm = document.getElementById('apply-form');
 const applyStatus = document.getElementById('apply-status');
 if (applyForm) {
@@ -979,7 +611,7 @@ if (applyForm) {
     const submitBtn = applyForm.querySelector('.apply-submit');
     submitBtn.disabled = true;
     applyStatus.textContent = 'Sending...';
-    applyStatus.classList.remove('is-success', 'is-error');
+    applyStatus.className = 'apply-status';
     try {
       const res = await fetch(applyForm.action, {
         method: 'POST',
@@ -1002,10 +634,6 @@ if (applyForm) {
     }
   });
 }
-</script>
-<!-- Chatbase widget -->
-<script>
-(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="on_Ebv1KxZyKs4Jsl14FG";script.domain="[www.chatbase.co](https://www.chatbase.co)";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 </script>
 </body>
 </html>
