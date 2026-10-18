@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f7f6f2">
 <title>Disclose</title>
 <meta name="description" content="Disclose is an open standard for merchants to publish performance signals at /.well-known/disclose, so AI agents can compute their own confidence before checkout.">
 <meta property="og:title" content="Disclose: merchant performance signals for AI agents">
 <meta property="og:description" content="An open, MIT-licensed standard for publishing attested merchant performance signals where any agent can find them.">
 <meta property="og:url" content="https://discloseframework.dev">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://discloseframework.dev/disclose_protocol_logo.jpg">
+<meta property="og:image" content="https://discloseframework.dev/disclose_logo.png">
 <meta name="twitter:card" content="summary">
-<link rel="icon" type="image/jpeg" href="disclose_protocol_logo.jpg">
+<link rel="icon" type="image/png" href="disclose_logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
@@ -26,13 +27,14 @@
   --demo-bg: #111111;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; }
+html { font-size: 16px; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Mono', monospace;
   line-height: 1.6;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 .grid-bg {
   position: fixed;
@@ -78,6 +80,7 @@ nav a:hover { color: var(--text); }
   min-height: calc(100vh - 64px);
   border-bottom: 1px solid var(--line);
 }
+.hero > * { min-width: 0; }
 .hero-left {
   padding: 4.5rem 3.5rem 4rem;
   display: flex;
@@ -86,12 +89,13 @@ nav a:hover { color: var(--text); }
   border-right: 1px solid var(--line);
 }
 .brand {
+  align-self: flex-start;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 2.5rem;
 }
-.brand img { width: 42px; height: 42px; object-fit: contain; mix-blend-mode: multiply; }
+.brand img { width: 42px; height: 42px; object-fit: contain; }
 .brand-name {
   font-weight: 500;
   font-size: 1.05rem;
@@ -272,7 +276,7 @@ nav a:hover { color: var(--text); }
   background: var(--surface);
   padding: 0.75rem 0.9rem;
 }
-.apply-select { border-right: none; appearance: none; padding-right: 2rem; }
+.apply-select { border-right: none; -webkit-appearance: none; appearance: none; padding-right: 2.25rem; color: var(--text); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b6b66'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.9rem center; }
 .apply-email { flex: 1; border-right: none; }
 .apply-submit {
   background: var(--text);
@@ -331,7 +335,7 @@ footer {
   color: var(--muted);
 }
 .footer-left { display: flex; align-items: center; gap: 0.6rem; }
-.footer-left img { width: 22px; height: 22px; object-fit: contain; mix-blend-mode: multiply; }
+.footer-left img { width: 22px; height: 22px; object-fit: contain; }
 .footer-links { display: flex; gap: 1.75rem; }
 .footer-links a { color: var(--muted); text-decoration: none; }
 .footer-links a:hover { color: var(--text); }
@@ -354,6 +358,38 @@ footer {
   .apply-select, .apply-email, .apply-submit { width: 100%; border: 1px solid rgba(0,0,0,0.18); }
   .apply-select, .apply-email { border-bottom: none; }
 }
+/* Phones */
+@media (max-width: 600px) {
+  header { padding-top: 1rem; padding-bottom: 1rem; }
+  .hero { min-height: 0; }
+  .hero-left { padding: 2.25rem 1.25rem 2rem; }
+  .brand { margin-bottom: 1.75rem; }
+  .hero-title { font-size: 2.1rem; line-height: 1.12; }
+  .hero-body { font-size: 0.88rem; line-height: 1.7; max-width: none; }
+  .hero-body code { overflow-wrap: anywhere; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions a, .working-group-actions a, .cta .btn-primary { width: 100%; text-align: center; padding: 0.95rem 1rem; }
+  .working-group-actions { flex-direction: column; }
+  .hero-right { padding: 0 1rem 1.75rem; background: transparent; }
+  .demo-panel { border-radius: 10px; }
+  .panel-body { padding: 1rem 0.85rem 0.9rem; }
+  .signal-table { font-size: 0.66rem; }
+  .signal-table td:first-child { white-space: normal; min-width: 9.5rem; }
+  .signal-table th, .signal-table td { padding-right: 0.6rem; }
+  .stat, .feature { padding: 1.75rem 1.25rem; }
+  .stat-num { font-size: 1.5rem; }
+  .feature-body { font-size: 0.84rem; }
+  .section { padding: 2.5rem 1.25rem; }
+  .section h2 { font-size: 1.45rem; }
+  .section p { font-size: 0.86rem; }
+  .json-block { font-size: 0.68rem; padding: 0.9rem 1rem; }
+  .apply-select, .apply-email { font-size: 16px; }
+  .apply-submit { padding: 0.95rem; }
+  .cta { padding: 2.5rem 1.25rem; gap: 1.25rem; }
+  .cta-text { font-size: 1.6rem; }
+  footer { padding: 1.5rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom)); }
+  .footer-left { flex-wrap: wrap; justify-content: center; }
+}
 </style>
 </head>
 <body>
@@ -373,7 +409,7 @@ footer {
 <section class="hero" id="overview">
   <div class="hero-left">
     <div class="brand">
-      <img src="disclose_protocol_logo.jpg" alt="Disclose">
+      <img src="disclose_logo.png" alt="Disclose" width="42" height="42" fetchpriority="high">
       <span class="brand-name">Disclose</span>
     </div>
     <h1 class="hero-title">Let any agent see how a merchant actually performs before it buys.</h1>
@@ -416,12 +452,12 @@ footer {
                 <tr><th>Signal</th><th>Value</th><th>Attestation</th></tr>
               </thead>
               <tbody>
-                <tr><td>refund_processing_time_median_days</td><td>2.4</td><td>computed</td></tr>
+                <tr><td>refund_processing_<wbr>time_median_days</td><td>2.4</td><td>computed</td></tr>
                 <tr><td>on_time_shipment_rate</td><td>96.2%</td><td class="tier-signatory">signatory</td></tr>
                 <tr><td>chargeback_rate</td><td>0.31%</td><td>none</td></tr>
                 <tr><td>dispute_win_rate</td><td>61%</td><td>none</td></tr>
                 <tr><td>product_return_rate</td><td>4.8%</td><td>computed</td></tr>
-                <tr><td>platform_seller_tenure_days</td><td>1460</td><td>computed</td></tr>
+                <tr><td>platform_seller_<wbr>tenure_days</td><td>1460</td><td>computed</td></tr>
               </tbody>
             </table>
           </div>
@@ -593,7 +629,7 @@ footer {
 
 <footer>
   <div class="footer-left">
-    <img src="disclose_protocol_logo.jpg" alt="Disclose">
+    <img src="disclose_logo.png" alt="" width="22" height="22" loading="lazy">
     <span>© 2026 Disclose · Open Source, MIT License</span>
   </div>
   <div class="footer-links">
