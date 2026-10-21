@@ -88,19 +88,28 @@ nav a:hover { color: var(--text); }
   justify-content: center;
   border-right: 1px solid var(--line);
 }
+/* CHANGED: bigger logo and wordmark */
 .brand {
   align-self: flex-start;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 2.5rem;
+  gap: 1rem;
+  margin-bottom: 2.25rem;
 }
-.brand img { width: 42px; height: 42px; object-fit: contain; }
+.brand img { width: 64px; height: 64px; object-fit: contain; }
 .brand-name {
   font-weight: 500;
-  font-size: 1.05rem;
+  font-size: 1.5rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+/* NEW: category tag above the headline */
+.hero-tag {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
 }
 .hero-title {
   font-family: 'DM Serif Display', serif;
@@ -109,6 +118,15 @@ nav a:hover { color: var(--text); }
   font-weight: 400;
   letter-spacing: -0.015em;
   margin-bottom: 1.5rem;
+}
+/* NEW: proof line under the headline */
+.hero-lead {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: var(--text);
+  max-width: 44ch;
+  margin-bottom: 1.25rem;
 }
 .hero-body {
   font-size: 0.95rem;
@@ -363,8 +381,12 @@ footer {
   header { padding-top: 1rem; padding-bottom: 1rem; }
   .hero { min-height: 0; }
   .hero-left { padding: 2.25rem 1.25rem 2rem; }
-  .brand { margin-bottom: 1.75rem; }
+  .brand { margin-bottom: 1.75rem; gap: 0.8rem; }
+  .brand img { width: 52px; height: 52px; }
+  .brand-name { font-size: 1.25rem; }
+  .hero-tag { font-size: 0.66rem; }
   .hero-title { font-size: 2.1rem; line-height: 1.12; }
+  .hero-lead { font-size: 1.1rem; max-width: none; }
   .hero-body { font-size: 0.88rem; line-height: 1.7; max-width: none; }
   .hero-body code { overflow-wrap: anywhere; }
   .hero-actions { flex-direction: column; }
@@ -409,15 +431,16 @@ footer {
 <section class="hero" id="overview">
   <div class="hero-left">
     <div class="brand">
-      <img src="disclose_logo.png" alt="Disclose" width="42" height="42" fetchpriority="high">
+      <img src="disclose_logo.png" alt="Disclose" width="64" height="64" fetchpriority="high">
       <span class="brand-name">Disclose</span>
     </div>
+    <p class="hero-tag">The open standard for merchant performance</p>
     <h1 class="hero-title">Let any agent see how a merchant actually performs before it buys.</h1>
-    <p class="hero-body">
-      Agents can already read price, availability, reviews, and policy text. They still cannot reliably see refund speed, on-time shipment, chargeback ratios, or return rates. Disclose is an open standard for merchants to publish those performance signals at <code>/.well-known/disclose</code>.
+    <p class="hero-lead">
+      Merchants publish operational data at one open endpoint. Signatories with something to lose attest to it. Agents draw their own conclusions.
     </p>
     <p class="hero-body">
-      No scores. No badges. The agent computes its own confidence from attested observations, weighted for the buyer it works for.
+      Agents can already read price, availability, reviews, and policy text. They still cannot reliably see refund speed, on-time shipment, chargeback ratios, or return rates. Disclose gives merchants one place to publish those performance signals: <code>/.well-known/disclose</code>.
     </p>
     <div class="hero-actions">
       <a href="https://github.com/disclose-framework/spec/blob/main/specification/overview.md" target="_blank" rel="noopener" class="btn-primary">Read the Spec</a>
